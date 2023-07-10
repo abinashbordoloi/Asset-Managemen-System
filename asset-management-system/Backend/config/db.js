@@ -2,7 +2,7 @@ const { Pool } = require('pg');
 
 // Create a new instance of the Pool for connecting to the PostgreSQL database
 const pool = new Pool({
-  user: 'admin',
+  user: 'postgres',
   host: 'localhost',
   database: 'Neepco',
   password: 'abinash',
