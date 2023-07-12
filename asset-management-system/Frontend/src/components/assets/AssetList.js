@@ -12,9 +12,9 @@ const AssetList = () => {
     });
   }, [page, searchTerm]);
 
-//   const handlePageChange = (event) => {
-//     setPage(event.target.value);
-//   };
+  const handlePageChange = (event) => {
+    setPage(event.target.value);
+  };
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
