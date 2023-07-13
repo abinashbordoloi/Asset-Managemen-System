@@ -67,6 +67,16 @@ app.delete("/api/public/Asset/:id", async (req, res) => {
   }
 });
 
+app.get("/api/public/SupplyOrder", async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM "public"."SupplyOrder"');
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error fetching asset:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
