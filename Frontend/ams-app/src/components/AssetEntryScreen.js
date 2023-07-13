@@ -166,6 +166,7 @@ const AssetEntryScreen = () => {
         Add Asset
       </Button>
 
+      {/* Table is starting here */}
       <h2>Edit Asset</h2>
 
       <Table striped bordered hover>
