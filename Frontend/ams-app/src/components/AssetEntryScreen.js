@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AssetEntryScreen = () => {
@@ -128,46 +129,33 @@ const AssetEntryScreen = () => {
     }
   };
 
-  const deleteAsset = async (id) => {
+  const deleteAsset = async (id, assetId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/public/Asset/${id}`);
-      fetchAssets();
+      const confirmation = window.prompt("Enter the asset ID to confirm deletion:");
+      if (confirmation === assetId) {
+        await axios.delete(`http://localhost:5000/api/public/Asset/${id}`);
+        fetchAssets();
+        alert("Asset deleted successfully!");
+      } else {
+        alert("Asset cannot be deleted. Invalid asset ID.");
+      }
     } catch (error) {
       console.error("Error deleting asset:", error);
     }
   };
-
+  
+  
   return (
     <div>
-      <h1>Asset Entry</h1>
+      <h1>Assets</h1>
+      <Link to="/add-asset">
+        <Button variant="primary">Add New Asset</Button>
+      </Link>
 
-      <h2>Add New Asset</h2>
-      <Form.Group>
-        <Form.Control
-          type="text"
-          placeholder="Name"
-          value={newAsset.asset_id}
-          onChange={(e) =>
-            setNewAsset({ ...newAsset, asset_id: e.target.value })
-          }
-        />
-      </Form.Group>
-      <Form.Group>
-        <Form.Control
-          type="text"
-          placeholder="Type"
-          value={newAsset.description}
-          onChange={(e) =>
-            setNewAsset({ ...newAsset, description: e.target.value })
-          }
-        />
-      </Form.Group>
-      <Button variant="primary" onClick={addAsset}>
-        Add Asset
-      </Button>
+      
 
       {/* Table is starting here */}
-      <h2>Edit Asset</h2>
+     
 
       <Table striped bordered hover>
         <thead>
@@ -417,11 +405,8 @@ const AssetEntryScreen = () => {
                     >
                       Edit
                     </Button>{" "}
-                    <Button
-                      variant="danger"
-                      onClick={() => deleteAsset(asset.asset_id)}
-                    >
-                      Delete
+                    <Button variant="danger"
+                      onClick={() => deleteAsset(asset.id, asset.asset_id)}>Delete
                     </Button>
                   </>
                 )}
