@@ -10,7 +10,6 @@ import UserScreen from './components/UserScreen';
 import LocationScreen from './components/LocationScreen';
 
 
-
 function App() {
   return (
     <div className="App">
