@@ -1,6 +1,7 @@
 const { Pool } = require("pg");
 const express = require("express");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
 
 const pool = new Pool({
   user: "postgres",
@@ -19,7 +20,7 @@ app.get("/api/public/Asset", async (req, res) => {
     const result = await pool.query('SELECT * FROM "public"."Asset"');
     res.json(result.rows);
   } catch (error) {
-    console.error("Error fetching asset:", error);
+    console.error("Error fetching assets:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -72,11 +73,95 @@ app.get("/api/public/SupplyOrder", async (req, res) => {
     const result = await pool.query('SELECT * FROM "public"."SupplyOrder"');
     res.json(result.rows);
   } catch (error) {
-    console.error("Error fetching asset:", error);
+    console.error("Error fetching supply orders:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
+// app.post("/api/public/passwords", async (req, res) => {
+//   const { username, password } = req.body;
+
+//   // try {
+//   //   const result = await pool.query(
+//   //     "SELECT password_hash FROM public.passwords WHERE username = $1",
+
+//   //     [username]
+//   //   );
+//   //   console.log("---------", result);
+//   //   res.status(200).json({
+//   //     message: "User authenticated successfully",
+//   //     r: result,
+//   //   });
+//   // } catch (error) {}
+
+//   // result.rows[0].password
+//   try {
+//     const result = await pool.query(
+//       "SELECT password_hash FROM public.passwords WHERE username = $1",
+
+//       [username]
+//     );
+//     // let isPasswordValid = false;
+
+//     if (result.rows.length === 0) {
+//       res.status(401).json({ error: "Invalid username or password" });
+//     } else {
+//       const storedHashedPassword = result.rows[0].password;
+//       // if (storedHashedPassword === password) {
+//       //   isPasswordValid = true;
+//       // } else {
+//       //   false;
+//       // }
+//       // console.log("-----", password, password.length);
+//       let IPV = await bcrypt.compare(password, storedHashedPassword);
+
+//       if (IPV === true) {
+//         res.status(200).json({ message: "User authenticated successfully" });
+//       } else {
+//         res.status(401).json({
+//           error: "Invalid username or password",
+//           // p: password,
+//           // l: password.length,
+//           // K: IPV,
+//           // S: storedHashedPassword,
+//         });
+//       }
+//     }
+//   } catch (error) {
+//     console.error("An error occurred during login:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+
+app.post("/api/public/passwords", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const result = await pool.query(
+      "SELECT password_hash FROM public.passwords WHERE username = $1",
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      res.status(401).json({ error: "Invalid username or password" });
+    } else {
+      const storedHashedPassword = result.rows[0].password_hash;
+      const isPasswordValid = await bcrypt.compare(
+        password,
+        storedHashedPassword
+      );
+
+      if (isPasswordValid) {
+        res.status(200).json({ message: "User authenticated successfully" });
+      } else {
+        res.status(401).json({ error: "Invalid username or password" });
+      }
+    }
+  } catch (error) {
+    console.error("An error occurred during login:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+// import Navbar from "./Navbar";
+// import Navbar from "../components/Navbar";
 const AssetEntryScreen = () => {
   const [assets, setAssets] = useState([]);
   const [newAsset, setNewAsset] = useState({
@@ -136,9 +137,10 @@ const AssetEntryScreen = () => {
       console.error("Error deleting asset:", error);
     }
   };
-
+  // <Navbar />;
   return (
     <div>
+      {/* <Navbar /> */}
       <h1>Asset Entry</h1>
 
       <h2>Add New Asset</h2>
