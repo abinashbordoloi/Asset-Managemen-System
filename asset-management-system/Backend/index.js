@@ -70,6 +70,31 @@ app.put("/users/:id", async (req, res) => {
 }
 );
 
+//delete a user
+app.delete("/users/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deleteUser = await pool.query("DELETE FROM public.users WHERE id = $1", [id]);
+  
+      // Check the result and send an appropriate response to the client
+      if (deleteUser.rowCount > 0) {
+        // If rowCount is greater than 0, it means a user was deleted successfully
+        res.json("User with ID " + id + " was deleted!");
+      } else {
+        // If rowCount is 0, it means no user was found with the specified ID
+        res.json("User with ID " + id + " not found or could not be deleted.");
+      }
+      
+    } catch (err) {
+      console.log(err.message);
+      // Handle any errors that occur during the deletion process
+      res.status(500).json("An error occurred while deleting the user.");
+    }
+  });
+  
+
+
+
 
 //create a asset
 app.post("/assets", async (req, res) => {
