@@ -1,0 +1,104 @@
+/* SupplyOrderScreen.css */
+
+/* Page Styles */
+body {
+  background-color: #fff; /* Change to white */
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  padding: 20px;
+  max-width: 960px; /* Adjust the max-width as per your requirements */
+  margin: 0 auto;
+}
+
+h2 {
+  color: #ff8252;
+}
+
+/* Table Styles */
+.table {
+  margin-top: 20px;
+  background-color: #fff; /* Change to white */
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.table thead th {
+  background-color: #f5f5f5; /* Change to white */
+  color: #333;
+}
+
+.table tbody td {
+  background-color: #fff; /* Change to white */
+}
+
+/* Hover Effect */
+.table tbody tr:hover {
+  background-color: #f0f0f0; /* Change to a lighter shade of gray */
+}
+
+/* Border Styles */
+.table-bordered {
+  border: 1px solid #ccc;
+}
+
+.table-bordered thead th,
+.table-bordered tbody td {
+  border: 1px solid #ccc;
+}
+
+/* Striped Rows */
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f5f5f5;
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+  background-color: #fff; /* Change to white */
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table thead,
+  .table tbody,
+  .table th,
+  .table td,
+  .table tr {
+    display: block;
+  }
+
+  .table th {
+    height: 40px;
+    padding: 5px;
+  }
+
+  .table td {
+    height: 40px;
+    padding: 5px;
+    border-top: none;
+    position: relative;
+    white-space: nowrap;
+  }
+
+  .table td:before {
+    content: attr(data-label);
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    font-weight: bold;
+  }
+}

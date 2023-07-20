@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import "./SupplyOrderScreen.css";
 const SupplyOrderScreen = () => {
   const [supplyOrders, setSupplyOrders] = useState([]);
 

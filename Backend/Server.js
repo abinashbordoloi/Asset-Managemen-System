@@ -55,17 +55,33 @@ app.put("/api/public/Asset/:id", async (req, res) => {
   }
 });
 
-app.delete("/api/public/Asset/:id", async (req, res) => {
-  const id = req.params.id;
+// app.delete("/api/public/Asset/:id", async (req, res) => {
+//   const id = req.params.id;
 
+//   try {
+//     await pool.query('DELETE FROM "public"."Asset" WHERE id = $1', [id]);
+//     res.json({ message: "Asset deleted successfully" });
+//   } catch (error) {
+//     console.error("Error deleting asset:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+
+//delete a asset
+app.delete("api/public/Assetdelete/:id", async (req, res) => {
   try {
-    await pool.query('DELETE FROM "public"."Asset" WHERE id = $1', [id]);
-    res.json({ message: "Asset deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting asset:", error);
-    res.status(500).json({ error: "Internal server error" });
+    const { id } = req.params;
+    const deleteAsset = await pool.query("DELETE FROM Asset WHERE asset_id = $1", [id]);
+    console.log(deleteAsset);
+    res.status(204).send(); // Use 204 No Content for successful deletion
+  } catch (err) {
+    console.error("Error deleting asset:", err);
+    res.status(500).json({ error: "Failed to delete asset." }); // Use 500 Internal Server Error for failures
   }
 });
+
+
+
 
 app.get("/api/public/SupplyOrder", async (req, res) => {
   try {

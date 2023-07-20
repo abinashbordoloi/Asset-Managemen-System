@@ -129,22 +129,24 @@ const AssetEntryScreen = () => {
     }
   };
 
-  const deleteAsset = async (id, assetId) => {
+  const deleteAsset = async (id, asset_Id) => {
     try {
-      const confirmation = window.prompt("Enter the asset ID to confirm deletion:");
-      if (confirmation === assetId) {
-        await axios.delete(`http://localhost:5000/api/public/Asset/${id}`);
+      const confirmed = await showConfirmationModal(); // Implement a function to show a confirmation modal/dialog.
+      if (confirmed && confirmed === asset_Id) {
+        console.log("kuch toh hua hai ");
+        await axios.delete(`http://localhost:5000/api/public/Assetdelete/${id}`);
         fetchAssets();
         alert("Asset deleted successfully!");
       } else {
-        alert("Asset cannot be deleted. Invalid asset ID.");
+        alert("Asset cannot be deleted. Invalid asset ID or action canceled.");
       }
     } catch (error) {
       console.error("Error deleting asset:", error);
+      alert("Failed to delete asset. Please try again later.");
     }
   };
   
-  
+
   return (
     <div>
       <h1>Assets</h1>
@@ -406,7 +408,7 @@ const AssetEntryScreen = () => {
                       Edit
                     </Button>{" "}
                     <Button variant="danger"
-                      onClick={() => deleteAsset(asset.id, asset.asset_id)}>Delete
+                      onClick={() => deleteAsset(id, asset.asset_id)}>Delete
                     </Button>
                   </>
                 )}
