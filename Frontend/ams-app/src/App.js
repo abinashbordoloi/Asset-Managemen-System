@@ -18,33 +18,55 @@
 // }
 
 // export default App;
+
+// App.js or App.jsx
+
 import "./App.css";
 import { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import AssetEntryScreen from "./components/AssetEntryScreen";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+// import AssetEntryScreen from "./components/AssetEntryScreen";
 import LoginScreen from "./components/LoginScreen";
-import { useNavigate } from "react-router-dom";
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
 
   const handleLogin = () => {
     // Perform login logic and set the isLoggedIn state to true upon successful login
     setIsLoggedIn(true);
-    navigate("/asset-entry");
   };
 
   return (
     <Router>
       <Routes>
+        {/* Route for the root path */}
         <Route
           path="/"
-          element={!isLoggedIn ? navigate("/login") : navigate("/asset-entry")}
+          element={
+            isLoggedIn ? (
+              <Navigate to="/asset-entry" />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
-        <Route path="/login" element={<LoginScreen onLogin={handleLogin} />} />
-        {isLoggedIn && (
+        <Route
+          path="/login"
+          element={
+            isLoggedIn ? (
+              <Navigate to="/asset-entry" />
+            ) : (
+              <LoginScreen onLogin={handleLogin} />
+            )
+          }
+        />
+        {/* {isLoggedIn && (
           <Route path="/asset-entry" element={<AssetEntryScreen />} />
-        )}
+        )} */}
       </Routes>
     </Router>
   );
