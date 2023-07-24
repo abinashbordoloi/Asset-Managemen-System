@@ -80,9 +80,7 @@ app.delete("api/public/Assetdelete/:id", async (req, res) => {
   }
 });
 
-
-
-
+//to get supply order
 app.get("/api/public/SupplyOrder", async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM "public"."SupplyOrder"');
@@ -93,7 +91,19 @@ app.get("/api/public/SupplyOrder", async (req, res) => {
   }
 });
 
+// to get location
+// app.get("/api/public/Location", async (req, res) => {
+//   try {
+//     const result = await pool.query('SELECT * FROM "public"."Location"');
+//     res.json(result.rows);
+//   } catch (error) {
+//     console.error("Error fetching locations:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
+
