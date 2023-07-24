@@ -14,9 +14,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+//to show tables
 app.get("/api/public/Asset", async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM "public"."Asset"');
+    const result = await pool.query('SELECT * FROM public."Asset"');
     res.json(result.rows);
   } catch (error) {
     console.error("Error fetching asset:", error);
@@ -24,6 +25,7 @@ app.get("/api/public/Asset", async (req, res) => {
   }
 });
 
+//to add asset
 app.post("/api/public/Asset", async (req, res) => {
   const { name, type } = req.body;
 
@@ -39,39 +41,53 @@ app.post("/api/public/Asset", async (req, res) => {
   }
 });
 
-app.put("/api/public/Asset/:id", async (req, res) => {
-  const id = req.params.id;
-  const { name, type } = req.body;
 
-  try {
-    await pool.query(
-      'UPDATE "public"."Asset" SET name = $1, type = $2 WHERE id = $3',
-      [name, type, id]
-    );
-    res.json({ message: "Asset updated successfully" });
-  } catch (error) {
-    console.error("Error updating asset:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// app.delete("/api/public/Asset/:id", async (req, res) => {
+// //to update asset
+// app.put("/api/public/Asset/:id", async (req, res) => {
 //   const id = req.params.id;
+//   const { name, type } = req.body;
 
 //   try {
-//     await pool.query('DELETE FROM "public"."Asset" WHERE id = $1', [id]);
-//     res.json({ message: "Asset deleted successfully" });
+//     await pool.query(
+//       'UPDATE "public"."asset" SET name = $1, type = $2 WHERE id = $3',
+//       [name, type, id]
+//     );
+//     res.json({ message: "Asset updated successfully" });
 //   } catch (error) {
-//     console.error("Error deleting asset:", error);
+//     console.error("Error updating asset:", error);
 //     res.status(500).json({ error: "Internal server error" });
 //   }
 // });
 
+
+//update a asset
+app.put("/assets/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { desciption, serial_no, location, category, procurement, installtion, insurance,warranty,tagging_status, remarks} = req.body;
+        const updateAsset = await pool.query("UPDATE asset SET desciption = $1, serial_no = $2, location = $3, category = $4, procurement = $5, installtion = $6, insurance = $7, warranty = $8, tagging_status = $9, remarks = $10 WHERE asset_id = $11");
+            [desciption, serial_no, location, category, procurement, installtion, insurance,warranty,tagging_status, remarks, id];
+
+        res.json("Asset was updated!");
+    } catch (err) {
+        console.error(err.message);
+    }
+}
+);
+
+
+
+
+
+
+
+
 //delete a asset
-app.delete("api/public/Assetdelete/:id", async (req, res) => {
+app.delete('/api/public/Assetdelete/:asset_id', async (req, res) => {
   try {
-    const { id } = req.params;
-    const deleteAsset = await pool.query("DELETE FROM Asset WHERE asset_id = $1", [id]);
+    console.log("try block")
+    const { asset_id } = req.params;
+    const deleteAsset = await pool.query('DELETE FROM public."Asset" WHERE asset_id = $1', [asset_id]);
     console.log(deleteAsset);
     res.status(204).send(); // Use 204 No Content for successful deletion
   } catch (err) {
@@ -102,6 +118,11 @@ app.get("/api/public/SupplyOrder", async (req, res) => {
 //   }
 // });
 
+
+
+
+
+//login password
 app.post("/api/public/passwords", async (req, res) => {
   const { username, password } = req.body;
 

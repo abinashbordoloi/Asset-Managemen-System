@@ -18,6 +18,8 @@ import PhysicalStatus from './components/Screens/PhysicalStatus'
 import Procurement from './components/Screens/Procurement'
 import TaggingStatus from './components/Screens/TaggingStatus'
 import Vendor from './components/Screens/Vendor'
+import LoginScreen from "./components/LoginScreen";
+
 
 
 
@@ -25,6 +27,7 @@ function App() {
   return (
     <div className="App">
       <Router>
+
         <Sidebar />
        
         <Navbar />
@@ -59,9 +62,6 @@ function App() {
           <Route path="/taggingstatus" element={<TaggingStatus />} />
 
           <Route path="/vendor" element={<Vendor />} />
-
-         
-         
 
          
         </Routes>
