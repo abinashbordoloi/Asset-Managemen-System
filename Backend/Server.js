@@ -102,6 +102,36 @@ app.get("/api/public/SupplyOrder", async (req, res) => {
 //   }
 // });
 
+app.post("/api/public/passwords", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const result = await pool.query(
+      "SELECT password_hash FROM public.passwords WHERE username = $1",
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      res.status(401).json({ error: "Invalid username or password" });
+    } else {
+      const storedHashedPassword = result.rows[0].password_hash;
+      const isPasswordValid = await bcrypt.compare(
+        password,
+        storedHashedPassword
+      );
+
+      if (isPasswordValid) {
+        res.status(200).json({ message: "User authenticated successfully" });
+      } else {
+        res.status(401).json({ error: "Invalid username or password" });
+      }
+    }
+  } catch (error) {
+    console.error("An error occurred during login:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

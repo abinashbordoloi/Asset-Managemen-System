@@ -129,10 +129,10 @@ const AssetEntryScreen = () => {
     }
   };
 
-  const deleteAsset = async (id, asset_Id) => {
+  const deleteAsset = async (id, asset_id) => {
     try {
-      const confirmed = await showConfirmationModal(); // Implement a function to show a confirmation modal/dialog.
-      if (confirmed && confirmed === asset_Id) {
+      const confirmed = window.confirm("Are you sure you want to delete this asset?");
+      if (confirmed && confirmed === asset_id) {
         console.log("kuch toh hua hai ");
         await axios.delete(`http://localhost:5000/api/public/Assetdelete/${id}`);
         fetchAssets();
@@ -145,6 +145,10 @@ const AssetEntryScreen = () => {
       alert("Failed to delete asset. Please try again later.");
     }
   };
+  
+  
+  
+  
   
 
   return (
@@ -408,7 +412,7 @@ const AssetEntryScreen = () => {
                       Edit
                     </Button>{" "}
                     <Button variant="danger"
-                      onClick={() => deleteAsset(id, asset.asset_id)}>Delete
+                      onClick={() => deleteAsset(asset.id, asset.asset_id)}>Delete
                     </Button>
                   </>
                 )}
