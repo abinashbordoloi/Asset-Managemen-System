@@ -1,8 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
-import { Table, Button, Modal, Form } from "react-bootstrap";
+import { Table, Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 const API_ENDPOINT = "http://localhost:5000/users";
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
