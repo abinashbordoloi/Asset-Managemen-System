@@ -126,6 +126,7 @@ const AssetEntryScreen = () => {
       });
     } catch (error) {
       console.error("Error updating asset:", error);
+      alert("Failed to update asset. Please try again later.");
     }
   };
 
