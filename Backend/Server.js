@@ -162,6 +162,96 @@ app.post("/api/public/passwords", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+app.get("/api/public/Procurement", async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM "public"."Procurement"');
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error fetching procurement details:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// // Procurement details route - Add new procurement details
+// app.post("/api/public/Procurement", async (req, res) => {
+//   const {
+//     procurement_id,
+//     supply_order_id,
+//     purchase_date,
+//     purchase_price,
+//     vendor_price,
+//     invoice_id,
+//     challan_id,
+//   } = req.body;
+
+//   try {
+//     await pool.query(
+//       'INSERT INTO "public"."Procurement" (procurement_id, supply_order_id, purchase_date, purchase_price, vendor_price, invoice_id, challan_id) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+//       [
+//         procurement_id,
+//         supply_order_id,
+//         purchase_date,
+//         purchase_price,
+//         vendor_price,
+//         invoice_id,
+//         challan_id,
+//       ]
+//     );
+//     res.status(201).json({ message: "Procurement details added successfully" });
+//   } catch (error) {
+//     console.error("Error adding procurement details:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+
+// // Procurement details route - Update procurement details
+// app.put("/api/public/Procurement/:id", async (req, res) => {
+//   const id = req.params.id;
+//   const {
+//     procurement_id,
+//     supply_order_id,
+//     purchase_date,
+//     purchase_price,
+//     vendor_price,
+//     invoice_id,
+//     challan_id,
+//   } = req.body;
+
+//   try {
+//     await pool.query(
+//       'UPDATE "public"."Procurement" SET procurement_id = $1, supply_order_id = $2, purchase_date = $3, purchase_price = $4, vendor_price = $5, invoice_id = $6, challan_id = $7 WHERE id = $8',
+//       [
+//         procurement_id,
+//         supply_order_id,
+//         purchase_date,
+//         purchase_price,
+//         vendor_price,
+//         invoice_id,
+//         challan_id,
+//         id,
+//       ]
+//     );
+//     res.json({ message: "Procurement details updated successfully" });
+//   } catch (error) {
+//     console.error("Error updating procurement details:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+
+// Procurement details route - Delete procurement details
+app.delete("/api/public/Procurement/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await pool.query('DELETE FROM "public"."Procurement" WHERE id = $1', [id]);
+    res.json({ message: "Procurement details deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting procurement details:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import Navbar from "./Navbar";
-// import Navbar from "../components/Navbar";
-const AssetEntryScreen = () => {
+// import Navbar from "../Navbar";
+// import Navbar from "./components/Navbar";
+
+const AssetEntryScreen = (props) => {
+  // let checklog = props.isLoggedIn;
+  // console.log(checklog);
   const [assets, setAssets] = useState([]);
   const [newAsset, setNewAsset] = useState({
     asset_id: "",
@@ -137,10 +140,10 @@ const AssetEntryScreen = () => {
       console.error("Error deleting asset:", error);
     }
   };
-  // <Navbar />;
+
   return (
+    // checklog ? (
     <div>
-      {/* <Navbar /> */}
       <h1>Asset Entry</h1>
 
       <h2>Add New Asset</h2>
@@ -433,6 +436,8 @@ const AssetEntryScreen = () => {
         </tbody>
       </Table>
     </div>
+    // ) : (
+    //   <p> Please Login</p>
   );
 };
 
