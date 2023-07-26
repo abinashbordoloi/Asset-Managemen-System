@@ -53,6 +53,8 @@ const AddAssetScreen = () => {
   return (
     <div>
       <h2>Add New Asset</h2>
+
+      <h3>Asset</h3>
       <Form.Group>
         <Form.Control
           type="text"

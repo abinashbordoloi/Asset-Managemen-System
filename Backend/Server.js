@@ -43,23 +43,6 @@ app.post("/api/public/Asset", async (req, res) => {
   }
 });
 
-// //to update asset
-// app.put("/api/public/Asset/:id", async (req, res) => {
-//   const id = req.params.id;
-//   const { name, type } = req.body;
-
-//   try {
-//     await pool.query(
-//       'UPDATE "public"."asset" SET name = $1, type = $2 WHERE id = $3',
-//       [name, type, id]
-//     );
-//     res.json({ message: "Asset updated successfully" });
-//   } catch (error) {
-//     console.error("Error updating asset:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
-
 //update a asset
 app.put("/assets/:id", async (req, res) => {
   try {
@@ -129,18 +112,141 @@ app.get("/api/public/SupplyOrder", async (req, res) => {
   }
 });
 
+// to update supply order
+app.put('/api/public/SupplyOrder/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { supply_order_no, supply_order_date, price } = req.body;
+
+    const updateQuery = `
+      UPDATE public."SupplyOrder"
+      SET supply_order_no = $1, supply_order_date = $2, price = $3
+      WHERE id = $4
+    `;
+
+    await pool.query(updateQuery, [supply_order_no, supply_order_date, price, id]);
+
+    res.status(200).json({ message: 'Supply order updated successfully!' });
+  } catch (error) {
+    console.error('Error updating supply order:', error);
+    res.status(500).json({ error: 'Failed to update supply order.' });
+  }
+});
+
 //      Location Entry Screen
 
 //to get location
-app.get("/api/public/Location", async (req, res) => {
+app.get('/api/public/Location', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM "public"."Location"');
-    res.json(result.rows);
+    const fetchLocationsQuery = `
+      SELECT * FROM public."Location"
+    `;
+    const locations = await pool.query(fetchLocationsQuery);
+    res.status(200).json(locations.rows);
   } catch (error) {
-    console.error("Error fetching locations:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error fetching locations:', error);
+    res.status(500).json({ error: 'Failed to fetch locations.' });
   }
 });
+
+//to add location
+app.post('/api/public/add-Location', async (req, res) => {
+  try {
+    const { name, address, city, state, country } = req.body;
+    const insertLocationQuery = `
+      INSERT INTO public."Location" (name, address, city, state, country)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *
+    `;
+    const values = [name, address, city, state, country];
+    const newLocation = await pool.query(insertLocationQuery, values);
+    res.status(201).json(newLocation.rows[0]);
+  } catch (error) {
+    console.error("Error adding location:", error);
+    res.status(500).json({ error: "Failed to add location. Please try again later." });
+  }
+});
+
+//to edit location
+app.put('/api/public/Location/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, address, city, state, country } = req.body;
+
+    // Perform the update operation in the database
+    const updateQuery = `
+      UPDATE public."Location"
+      SET name = $1, address = $2, city = $3, state = $4, country = $5
+      WHERE id = $6
+    `;
+
+    await pool.query(updateQuery, [name, address, city, state, country, id]);
+
+    res.status(200).json({ message: 'Location updated successfully!' });
+  } catch (error) {
+    console.error('Error updating location:', error);
+    res.status(500).json({ error: 'Failed to update location.' });
+  }
+});
+
+
+
+//            Category Screen
+
+//to get category
+app.get("/api/public/Category", async (req, res) => {
+  try {
+    const fetchCategoriesQuery = `
+      SELECT * FROM public."Category"
+    `;
+    const categories = await pool.query(fetchCategoriesQuery);
+    res.status(200).json(categories.rows);
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    res.status(500).json({ error: 'Failed to fetch categories.' });
+  }
+});
+ 
+//to add category
+app.post('/api/public/add-Category', async (req, res) => {
+  try {
+    const { name, description } = req.body;
+    const insertCategoryQuery = `
+      INSERT INTO public."Category" (name, description)
+      VALUES ($1, $2)
+      RETURNING *
+    `;
+    const values = [name, description];
+    const newCategory = await pool.query(insertCategoryQuery, values);
+    res.status(201).json(newCategory.rows[0]);
+  } catch (error) {
+    console.error("Error adding category:", error);
+    res.status(500).json({ error: "Failed to add category. Please try again later." });
+  }
+});
+
+//to update category
+app.put('/api/public/Category/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, description } = req.body;
+    const updateQuery = `
+      UPDATE public."Category"
+      SET name = $1, description = $2
+      WHERE id = $3
+    `;
+
+    await pool.query(updateQuery, [name, description, id]);
+
+    res.status(200).json({ message: 'Category updated successfully!' });
+  } catch (error) {
+    console.error('Error updating category:', error);
+    res.status(500).json({ error: 'Failed to update category.' });
+  }
+});
+
+
+
 
 //            Login Screen
 

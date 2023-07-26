@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./SupplyOrderScreen.css";
 
 const SupplyOrderScreen = () => {
   const [supplyOrders, setSupplyOrders] = useState([]);
@@ -13,11 +12,10 @@ const SupplyOrderScreen = () => {
     price: 0,
   });
 
-
   useEffect(() => {
     fetchSupplyOrders();
   }, []);
-
+//to display supplyorder table
   const fetchSupplyOrders = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/public/SupplyOrder");
@@ -27,6 +25,7 @@ const SupplyOrderScreen = () => {
     }
   };
 
+  //to edit and save supply order table
   const handleEditOrder = (order) => {
     setEditingOrderId(order.id);
     setEditedOrder(order);
@@ -44,31 +43,23 @@ const SupplyOrderScreen = () => {
         editedOrder
       );
       console.log("Supply order updated successfully!");
-      setEditingOrderId(null); // Exit edit mode after saving changes.
-      fetchSupplyOrders(); // Refresh the supply orders list.
+      setEditingOrderId(null); 
+      fetchSupplyOrders(); 
     } catch (error) {
       console.error("Error updating supply order:", error);
     }
   };
 
   const handleCancelEdit = () => {
-    setEditingOrderId(null); // Exit edit mode without saving changes.
-  };
-
-  const handleDeleteOrder = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/public/SupplyOrder/${id}`);
-      console.log("Supply order deleted successfully!");
-      fetchSupplyOrders(); // Refresh the supply orders list after deleting.
-    } catch (error) {
-      console.error("Error deleting supply order:", error);
-    }
+    setEditingOrderId(null); 
   };
 
   return (
     <div>
       <h2>Supply Orders</h2>
-
+      <Button variant="primary" href="/add-location" style={{ marginBottom: "10px" }}>
+        Add New Supply Order
+      </Button>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -130,14 +121,9 @@ const SupplyOrderScreen = () => {
                     </Button>
                   </>
                 ) : (
-                  <>
-                    <Button variant="primary" onClick={() => handleEditOrder(order)}>
-                      Edit
-                    </Button>{" "}
-                    <Button variant="danger" onClick={() => handleDeleteOrder(order.id)}>
-                      Delete
-                    </Button>
-                  </>
+                  <Button variant="primary" onClick={() => handleEditOrder(order)}>
+                    Edit
+                  </Button>
                 )}
               </td>
             </tr>

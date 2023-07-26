@@ -53,30 +53,8 @@ const AssetEntryScreen = () => {
     }
   };
 
-  const addAsset = async () => {
-    try {
-      await axios.post("http://localhost:5000/api/public/Asset", newAsset);
-      fetchAssets();
-      setNewAsset({
-        asset_id: "",
-        description: "",
-        serial_no: "",
-        location: "",
-        category: "",
-        procurement: "",
-        installation: "",
-        insurance: "",
-        warranty: "",
-        tagging_status: "",
-        remarks: "",
-        supplyOrder: "",
-        challan: "",
-      });
-    } catch (error) {
-      console.error("Error adding asset:", error);
-    }
-  };
 
+//edit asset
   const startEditing = (asset) => {
     setEditingAsset(asset);
     setUpdatedAsset({ ...asset });

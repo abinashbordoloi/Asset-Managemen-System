@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
-import "./Navbar.css"; // Import the CSS file
+//import "./Navbar.css"; // Import the CSS file
 
 function NavbarComponent() {
   const handleLogout = () => {
