@@ -14,7 +14,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-//     Asset Screen
+
+
+
+{/*                          Asset Screen                                     */}
 
 //to show asset table
 app.get("/api/public/Asset", async (req, res) => {
@@ -99,7 +102,12 @@ app.delete("/api/public/Assetdelete/:asset_id", async (req, res) => {
   }
 });
 
-//      Supply Order Screen
+
+
+
+
+
+{/*                          Supply Order Screen                                     */} 
 
 //to get supply order
 app.get("/api/public/SupplyOrder", async (req, res) => {
@@ -133,7 +141,11 @@ app.put('/api/public/SupplyOrder/:id', async (req, res) => {
   }
 });
 
-//      Location Entry Screen
+
+
+
+
+{/*                          Location Entry Screen                                     */}     
 
 //to get location
 app.get('/api/public/Location', async (req, res) => {
@@ -191,7 +203,10 @@ app.put('/api/public/Location/:id', async (req, res) => {
 
 
 
-//            Category Screen
+
+
+{/*                          Category Screen                            */}                                           
+
 
 //to get category
 app.get("/api/public/Category", async (req, res) => {
@@ -247,8 +262,122 @@ app.put('/api/public/Category/:id', async (req, res) => {
 
 
 
+{/*                          Challan Screen                            */}  
 
-//            Login Screen
+//to get challan (check)
+app.get("/api/public/Challan", async (req, res) => {
+  try {
+    const fetchChallansQuery = `
+      SELECT * FROM public."Challan"
+    `;
+    const challans = await pool.query(fetchChallansQuery);
+    res.status(200).json(challans.rows);
+  } catch (error) {
+    console.error('Error fetching challans:', error);
+    res.status(500).json({ error: 'Failed to fetch challans.' });
+  }
+});
+
+//to add new challan
+app.post('/api/public/add-Challan', async (req, res) => {
+  try {
+    const { challan_details } = req.body;
+
+    const insertChallanQuery = `
+      INSERT INTO public."Challan" (challan_details)
+      VALUES ($1)
+      RETURNING *
+    `;
+
+    const values = [challan_details];
+    const newChallan = await pool.query(insertChallanQuery, values);
+    res.status(201).json(newChallan.rows[0]);
+  } catch (error) {
+    console.error("Error adding challan:", error);
+    res.status(500).json({ error: "Failed to add challan. Please try again later." });
+  }
+});
+
+
+//to update challan
+
+app.put('/api/public/Challan/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { challan_details } = req.body;
+    const updateQuery = `
+      UPDATE public."Challan"
+      SET challan_details = $1
+      WHERE id = $2
+    `;
+
+    await pool.query(updateQuery, [challan_details, id]);
+
+    res.status(200).json({ message: 'Challan updated successfully!' });
+  } catch (error) {
+    console.error('Error updating challan:', error);
+    res.status(500).json({ error: 'Failed to update challan.' });
+  }
+});
+
+{/*                          Description Screen                            */}  
+
+//to get description
+app.get("/api/public/Description", async (req, res) => {
+  try {
+    const fetchDescriptionsQuery = `
+      SELECT * FROM public."Description"
+    `;
+    const descriptions = await pool.query(fetchDescriptionsQuery);
+    res.status(200).json(descriptions.rows);
+  } catch (error) {
+    console.error('Error fetching descriptions:', error);
+    res.status(500).json({ error: 'Failed to fetch descriptions.' });
+  }
+});
+
+//to add description
+app.post('/api/public/add-Description', async (req, res) => {
+  try {
+    const { make, specification, model } = req.body;
+    const insertDescriptionQuery = `
+      INSERT INTO public."Description" (make, specification, model)
+      VALUES ($1, $2, $3)
+      RETURNING *
+    `;
+    const values = [make, specification, model];
+    const newDescription = await pool.query(insertDescriptionQuery, values);
+    res.status(201).json(newDescription.rows[0]);
+  } catch (error) {
+    console.error("Error adding description:", error);
+    res.status(500).json({ error: "Failed to add description. Please try again later." });
+  }
+});
+
+//to update description
+app.put('/api/public/Description/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { make, specification, model } = req.body;
+    const updateQuery = `
+      UPDATE public."Description"
+      SET make = $1, specification = $2, model = $3
+      WHERE id = $4
+    `;
+
+    await pool.query(updateQuery, [make, specification, model, id]);
+
+    res.status(200).json({ message: 'Description updated successfully!' });
+  } catch (error) {
+    console.error('Error updating description:', error);
+    res.status(500).json({ error: 'Failed to update description.' });
+  }
+});
+
+
+
+{/*                         Login Screen                            */} 
+           
 
 //login password
 app.post("/api/public/passwords", async (req, res) => {
@@ -280,6 +409,8 @@ app.post("/api/public/passwords", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// Logout Screen
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
