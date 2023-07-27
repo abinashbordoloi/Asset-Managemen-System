@@ -22,6 +22,11 @@ import DescriptionForm from "./components/Screens/DescriptionForm";
 import InstallationForm from "./components/Screens/InstallationForm";
 import InsuranceForm from "./components/Screens/InsuranceForm";
 import InvoiceForm from "./components/Screens/InvoiceForm";
+import VendorForm from "./components/Screens/VendorForm";
+import TaggingStatusForm from "./components/Screens/TaggingStatusForm";
+import ProcurementForm from "./components/Screens/ProcurementForm";
+import PhysicalStatusForm from "./components/Screens/PhysicalStatusForm";
+import SupplyOrderForm from "./components/Screens/SupplyOrderForm";
 const routes = () => {
   return (
     <Routes>
@@ -47,6 +52,11 @@ const routes = () => {
       <Route path="/add-installation" element={<InstallationForm />} />
       <Route path="/add-insurance" element={<InsuranceForm />} />
       <Route path="/add-invoice" element={<InvoiceForm />} />
+      <Route path="/add-physical-status" element={<PhysicalStatusForm />} />
+      <Route path="/add-procurement" element={<ProcurementForm />} />
+      <Route path="/add-tagging-status" element={<TaggingStatusForm />} />
+      <Route path="/add-vendor" element={<VendorForm />} />
+      <Route path="/add-supply-order" element={<SupplyOrderForm />} />
     </Routes>
   );
 };

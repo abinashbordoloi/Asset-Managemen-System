@@ -6,24 +6,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const AssetEntryScreen = () => {
   const [assets, setAssets] = useState([]);
-  const [newAsset, setNewAsset] = useState({
-    asset_id: "",
-    description: "",
-    serial_no: "",
-    location: "",
-    category: "",
-    procurement: "",
-    installation: "",
-    insurance: "",
-    warranty: "",
-    tagging_status: "",
-    remarks: "",
-    supplyOrder: "",
-    challan: "",
-  });
   const [editingAsset, setEditingAsset] = useState(null);
   const [updatedAsset, setUpdatedAsset] = useState({
-    asset_id: "",
+    id: "",
     description: "",
     serial_no: "",
     location: "",
@@ -36,6 +21,10 @@ const AssetEntryScreen = () => {
     remarks: "",
     supplyOrder: "",
     challan: "",
+    physicalStatus: "",
+    asset_id: "",
+    waranty_start_date: "",
+    warranty_end_date: "",
   });
 
   useEffect(() => {
@@ -44,17 +33,14 @@ const AssetEntryScreen = () => {
 
   const fetchAssets = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/public/Asset"
-      );
+      const response = await axios.get("http://localhost:5000/api/public/Asset");
       setAssets(response.data);
     } catch (error) {
       console.error("Error fetching assets:", error);
     }
   };
 
-
-//edit asset
+  // Edit asset
   const startEditing = (asset) => {
     setEditingAsset(asset);
     setUpdatedAsset({ ...asset });
@@ -63,7 +49,7 @@ const AssetEntryScreen = () => {
   const cancelEditing = () => {
     setEditingAsset(null);
     setUpdatedAsset({
-      asset_id: "",
+      id: "",
       description: "",
       serial_no: "",
       location: "",
@@ -76,19 +62,23 @@ const AssetEntryScreen = () => {
       remarks: "",
       supplyOrder: "",
       challan: "",
+      physicalStatus: "",
+      asset_id: "",
+      waranty_start_date: "",
+      warranty_end_date: "",
     });
   };
 
   const updateAsset = async () => {
     try {
       await axios.put(
-        `http://localhost:5000/api/public/Asset/${editingAsset.asset_id}`,
+        `http://localhost:5000/api/public/Asset/${editingAsset.id}`,
         updatedAsset
       );
       fetchAssets();
       setEditingAsset(null);
       setUpdatedAsset({
-        asset_id: "",
+        id: "",
         description: "",
         serial_no: "",
         location: "",
@@ -101,6 +91,10 @@ const AssetEntryScreen = () => {
         remarks: "",
         supplyOrder: "",
         challan: "",
+        physicalStatus: "",
+        asset_id: "",
+        waranty_start_date: "",
+        warranty_end_date: "",
       });
     } catch (error) {
       console.error("Error updating asset:", error);
@@ -108,16 +102,12 @@ const AssetEntryScreen = () => {
     }
   };
 
-
-  //delete asset
+  // Delete asset
   const deleteAsset = async (asset_id) => {
     try {
       const confirmed = window.confirm("Are you sure you want to delete this asset?");
       if (confirmed) {
-        console.log("kuch toh hua hai ");
-        await axios.delete(`http://localhost:5000/api/public/Assetdelete/${asset_id}`);
-        // await axios.delete(`http://localhost:5000/api/public/Assetdelete/${asset_id}`);
-        console.log("kuch toh hua hai 2  ");
+        await axios.delete(`http://localhost:5000/api/public/Asset/${asset_id}`);
         fetchAssets();
         alert("Asset deleted successfully!");
       } else {
@@ -129,20 +119,13 @@ const AssetEntryScreen = () => {
     }
   };
 
-
-
-  
   return (
     <div>
-      <h1>Assets</h1>
-      <Link to="/add-asset">
-        <Button variant="primary">Add New Asset</Button>
-      </Link>
-
+      <h1>Asset Entry</h1>
       
-
-      {/* Table is starting here */}
-     
+      <Button variant="primary" href="/add-asset" style={{ marginBottom: "10px" }}>
+        Add New Asset
+      </Button>
 
       <Table striped bordered hover>
         <thead>
@@ -160,222 +143,205 @@ const AssetEntryScreen = () => {
             <th>Remarks</th>
             <th>Supply Order</th>
             <th>Challan</th>
+            <th>Physical Status</th>
+            <th>Asset ID</th>
+            <th>Warranty Start Date</th>
+            <th>Warranty End Date</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {assets.map((asset) => (
-            <tr key={asset.asset_id}>
+            <tr key={asset.id}>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
-                    value={updatedAsset.asset_id}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        asset_id: e.target.value,
-                      })
-                    }
+                    value={updatedAsset.id}
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, id: e.target.value })}
                   />
                 ) : (
-                  asset.asset_id
+                  asset.id
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
                     value={updatedAsset.description}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        description: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, description: e.target.value })}
                   />
                 ) : (
                   asset.description
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
                     value={updatedAsset.serial_no}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        serial_no: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, serial_no: e.target.value })}
                   />
                 ) : (
                   asset.serial_no
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
                     value={updatedAsset.location}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        location: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, location: e.target.value })}
                   />
                 ) : (
                   asset.location
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
                     value={updatedAsset.category}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        category: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, category: e.target.value })}
                   />
                 ) : (
                   asset.category
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
                     value={updatedAsset.procurement}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        procurement: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, procurement: e.target.value })}
                   />
                 ) : (
                   asset.procurement
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
                     value={updatedAsset.installation}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        installation: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, installation: e.target.value })}
                   />
                 ) : (
                   asset.installation
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
                     value={updatedAsset.insurance}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        insurance: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, insurance: e.target.value })}
                   />
                 ) : (
                   asset.insurance
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
                     value={updatedAsset.warranty}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        warranty: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, warranty: e.target.value })}
                   />
                 ) : (
                   asset.warranty
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
                     value={updatedAsset.tagging_status}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        tagging_status: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, tagging_status: e.target.value })}
                   />
                 ) : (
                   asset.tagging_status
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
                     value={updatedAsset.remarks}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        remarks: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, remarks: e.target.value })}
                   />
                 ) : (
                   asset.remarks
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
                     value={updatedAsset.supplyOrder}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        supplyOrder: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, supplyOrder: e.target.value })}
                   />
                 ) : (
                   asset.supplyOrder
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
                     value={updatedAsset.challan}
-                    onChange={(e) =>
-                      setUpdatedAsset({
-                        ...updatedAsset,
-                        challan: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, challan: e.target.value })}
                   />
                 ) : (
                   asset.challan
                 )}
               </td>
               <td>
-                {editingAsset && editingAsset.asset_id === asset.asset_id ? (
+                {editingAsset && editingAsset.id === asset.id ? (
+                  <Form.Control
+                    type="text"
+                    value={updatedAsset.physicalStatus}
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, physicalStatus: e.target.value })}
+                  />
+                ) : (
+                  asset.physicalStatus
+                )}
+              </td>
+              <td>
+                {editingAsset && editingAsset.id === asset.id ? (
+                  <Form.Control
+                    type="text"
+                    value={updatedAsset.asset_id}
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, asset_id: e.target.value })}
+                  />
+                ) : (
+                  asset.asset_id
+                )}
+              </td>
+              <td>
+                {editingAsset && editingAsset.id === asset.id ? (
+                  <Form.Control
+                    type="date"
+                    value={updatedAsset.waranty_start_date}
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, waranty_start_date: e.target.value })}
+                  />
+                ) : (
+                  asset.waranty_start_date
+                )}
+              </td>
+              <td>
+                {editingAsset && editingAsset.id === asset.id ? (
+                  <Form.Control
+                    type="date"
+                    value={updatedAsset.warranty_end_date}
+                    onChange={(e) => setUpdatedAsset({ ...updatedAsset, warranty_end_date: e.target.value })}
+                  />
+                ) : (
+                  asset.warranty_end_date
+                )}
+              </td>
+              <td>
+                {editingAsset && editingAsset.id === asset.id ? (
                   <>
                     <Button variant="success" onClick={updateAsset}>
                       Save
@@ -386,14 +352,11 @@ const AssetEntryScreen = () => {
                   </>
                 ) : (
                   <>
-                    <Button
-                      variant="primary"
-                      onClick={() => startEditing(asset)}
-                    >
+                    <Button variant="primary" onClick={() => startEditing(asset)}>
                       Edit
                     </Button>{" "}
-                    <Button variant="danger"
-                      onClick={() => deleteAsset(asset.asset_id)}>Delete
+                    <Button variant="danger" onClick={() => deleteAsset(asset.id)}>
+                      Delete
                     </Button>
                   </>
                 )}

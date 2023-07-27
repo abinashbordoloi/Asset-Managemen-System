@@ -16,7 +16,7 @@ const CategoryScreen = () => {
     fetchCategories();
   }, []);
 
-  // Function to fetch categories from the API
+  //to fetch categories from the API
   const fetchCategories = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/public/Category");
@@ -26,19 +26,19 @@ const CategoryScreen = () => {
     }
   };
 
-  // Function to start editing a category
+  //to start editing a category
   const handleEditCategory = (category) => {
     setEditingCategoryId(category.id);
     setEditedCategory(category);
   };
 
-  // Function to handle input change for edited category
+  //to handle input change for edited category
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedCategory((prevCategory) => ({ ...prevCategory, [name]: value }));
   };
 
-  // Function to save changes for the edited category
+  // save changes for the edited category
   const handleSaveChanges = async () => {
     try {
       await axios.put(
@@ -53,7 +53,7 @@ const CategoryScreen = () => {
     }
   };
 
-  // Function to cancel editing a category
+  //to cancel editing a category
   const handleCancelEdit = () => {
     setEditingCategoryId(null);
   };

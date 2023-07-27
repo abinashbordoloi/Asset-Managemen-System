@@ -57,7 +57,7 @@ const SupplyOrderScreen = () => {
   return (
     <div>
       <h2>Supply Orders</h2>
-      <Button variant="primary" href="/add-location" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" href="/add-supply-order" style={{ marginBottom: "10px" }}>
         Add New Supply Order
       </Button>
       <Table striped bordered hover>
