@@ -2,6 +2,8 @@ const { Pool } = require("pg");
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const Papa = require("papaparse");
+const multer = require("multer");
 
 const pool = new Pool({
   user: "postgres",
@@ -249,6 +251,49 @@ app.delete("/api/public/Procurement/:id", async (req, res) => {
   } catch (error) {
     console.error("Error deleting procurement details:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage }).single("csvFile");
+
+app.use(express.json());
+
+// Route to handle CSV data upload
+app.post("/api/public/SupplyOrder", upload, async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "No CSV file provided" });
+  }
+
+  const csvData = req.file.buffer.toString();
+
+  // Parse the CSV data into a JavaScript object
+  const { data, errors } = Papa.parse(csvData, { header: true });
+
+  if (errors.length > 0) {
+    return res.status(400).json({ error: "Error parsing CSV data" });
+  }
+
+  const query = `
+    INSERT INTO "public"."SupplyOrder" ("supply_order_no", "supply_order_date", "price")
+    VALUES ($1, $2, $3)
+  `;
+
+  try {
+    for (const order of data) {
+      const values = [
+        order.supply_order_no,
+        order.supply_order_date,
+        order.price,
+      ];
+
+      await pool.query(query, values);
+    }
+
+    return res.status(200).json({ message: "CSV data uploaded successfully" });
+  } catch (error) {
+    console.error("Error inserting CSV data:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 

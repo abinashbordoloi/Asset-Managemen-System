@@ -5,10 +5,37 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const SupplyOrderScreen = () => {
   const [supplyOrders, setSupplyOrders] = useState([]);
+  const [csvFile, setCsvFile] = useState(null);
 
   useEffect(() => {
     fetchSupplyOrders();
   }, []);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setCsvFile(file);
+  };
+
+  const handleFileUpload = async () => {
+    const formData = new FormData();
+    formData.append("csvFile", csvFile);
+
+    try {
+      await axios.post(
+        "http://localhost:5000/api/public/SupplyOrder",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      alert("CSV data uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading CSV file:", error);
+      alert("Failed to upload CSV data.");
+    }
+  };
 
   const fetchSupplyOrders = async () => {
     try {
@@ -45,6 +72,8 @@ const SupplyOrderScreen = () => {
           ))}
         </tbody>
       </Table>
+      <input type="file" accept=".csv" onChange={handleFileChange} />
+      <button onClick={handleFileUpload}>Upload CSV</button>
     </div>
   );
 };
