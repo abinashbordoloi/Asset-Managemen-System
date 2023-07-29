@@ -1,6 +1,7 @@
 const { Pool } = require("pg");
 const express = require("express");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
 
 const pool = new Pool({
   user: "postgres",

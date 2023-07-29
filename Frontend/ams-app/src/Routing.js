@@ -30,7 +30,7 @@ import SupplyOrderForm from "./components/Screens/SupplyOrderForm";
 const routes = () => {
   return (
     <Routes>
-      <Route path="/" element={<AssetEntryScreen />} />
+      <Route path="/asset" element={<AssetEntryScreen />} />
       <Route path="/add-asset" element={<AddAssetScreen />} />
       <Route path="/user" element={<UserScreen />} />
       <Route path="/supply-order" element={<SupplyOrderScreen />} />

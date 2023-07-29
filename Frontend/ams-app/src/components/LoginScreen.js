@@ -4,14 +4,13 @@ import { useNavigate } from "react-router-dom";
 // import Navbar from "../components/Navbar";
 // import { useHistory } from "react-router-dom";
 
-const LoginForm = () => {
+const LoginForm = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
@@ -43,6 +42,7 @@ const LoginForm = () => {
       if (response.status === 200) {
         // Login successful, navigate to the Navbar page
         console.log("User authenticated successfully");
+        onLogin();
         navigate("/asset-entry");
       } else {
         // Login failed, display error message

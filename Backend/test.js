@@ -8,7 +8,7 @@ const hashPassword = async (password) => {
 
     // Hash the password with the generated salt
     const hashedPassword = await bcrypt.hash(password, salt);
-    
+
     return hashedPassword;
     // console.log(
     //   await bcrypt.compare(

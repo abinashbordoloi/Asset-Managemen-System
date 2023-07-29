@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 //import "./Navbar.css"; // Import the CSS file
 
@@ -16,7 +16,7 @@ function NavbarComponent() {
       <Navbar.Brand></Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="ml-auto">
+        <Nav className="mr-auto">
           {/* <Nav.Link as={Link} to="/" active>
             Home
           </Nav.Link> */}
@@ -32,11 +32,11 @@ function NavbarComponent() {
           <Nav.Link as={Link} to="/location">
             Location
           </Nav.Link> */}
-          <Nav>
-            <Nav.Link href="#" onClick={handleLogout}>
+           <Nav>
+            <Nav.Link href="/" onClick={handleLogout}>
               Logout
-            </Nav.Link>
-          </Nav>
+            </Nav.Link> 
+          </Nav> 
         </Nav>
       </Navbar.Collapse>
     </Navbar>
