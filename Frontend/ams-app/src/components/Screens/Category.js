@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const CategoryScreen = () => {
+  const navigate = useNavigate();
+
+  const handleAddCategoryClick = () => {
+    navigate("/add-category");
+  };
   const [categories, setCategories] = useState([]);
   const [editingCategoryId, setEditingCategoryId] = useState(null);
   const [editedCategory, setEditedCategory] = useState({
@@ -62,7 +67,7 @@ const CategoryScreen = () => {
     <div>
       <h2>Categories</h2>
 
-      <Button variant="primary" href="/add-category" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddCategoryClick} style={{ marginBottom: "10px" }}>
         Add New Category
       </Button>
 

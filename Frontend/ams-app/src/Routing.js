@@ -27,10 +27,12 @@ import TaggingStatusForm from "./components/Screens/TaggingStatusForm";
 import ProcurementForm from "./components/Screens/ProcurementForm";
 import PhysicalStatusForm from "./components/Screens/PhysicalStatusForm";
 import SupplyOrderForm from "./components/Screens/SupplyOrderForm";
+import LoginForm from "./components/LoginScreen";
 const routes = () => {
   return (
     <Routes>
-      <Route path="/asset" element={<AssetEntryScreen />} />
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/" element={<AssetEntryScreen />} />
       <Route path="/add-asset" element={<AddAssetScreen />} />
       <Route path="/user" element={<UserScreen />} />
       <Route path="/supply-order" element={<SupplyOrderScreen />} />

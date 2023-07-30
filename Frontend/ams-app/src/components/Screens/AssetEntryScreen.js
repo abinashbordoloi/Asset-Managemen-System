@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
-// import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AssetEntryScreen = () => {
+  const navigate = useNavigate();
+
+  const handleAddAssetClick = () => {
+    navigate("/add-asset");
+  };
   const [assets, setAssets] = useState([]);
   const [editingAsset, setEditingAsset] = useState(null);
   const [updatedAsset, setUpdatedAsset] = useState({
@@ -123,7 +129,7 @@ const AssetEntryScreen = () => {
     <div>
       <h1>Asset Entry</h1>
       
-      <Button variant="primary" onClick={handlethelogin} href="/add-asset" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddAssetClick} style={{ marginBottom: "10px" }}>
         Add New Asset
       </Button>
 

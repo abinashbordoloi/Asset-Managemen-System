@@ -1,17 +1,9 @@
 import React, { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
-// import AssetEntryScreen from "./components/Screens/AssetEntryScreen";
-import LoginScreen from "./components/LoginScreen";
-// import routes from "./Routing";
-
+import LoginForm from "./components/LoginScreen";
 import AssetEntryScreen from "./components/Screens/AssetEntryScreen";
 import SupplyOrderScreen from "./components/Screens/SupplyOrderScreen";
 import AddAssetScreen from "./components/Screens/AddAssetScreen";
@@ -58,11 +50,7 @@ function App() {
           <Route
             path="/"
             element={
-              isLoggedIn ? (
-                <Navigate to="/asset-entry" />
-              ) : (
-                <Navigate to="/login" />
-              )
+              isLoggedIn ? <Navigate to="/asset-entry" /> : <Navigate to="/login" />
             }
           />
 
@@ -70,85 +58,38 @@ function App() {
           <Route
             path="/login"
             element={
-              isLoggedIn ? (
-                <Navigate to="/asset-entry" />
-              ) : (
-                <LoginScreen onLogin={handleLogin} />
-              )
+              isLoggedIn ? <Navigate to="/asset-entry" /> : <LoginForm onLogin={handleLogin} />
             }
           />
 
           {/* If isLoggedIn is true, show the AssetEntryScreen */}
-          {/* {isLoggedIn && <Routing />} */}
-
-          {isLoggedIn && (<Route path="/asset-entry" element={<AssetEntryScreen />} />)}
-      
-            <Route path="/add-asset" element={<AddAssetScreen />} />
-          
-          {isLoggedIn && (<Route path="/user" element={<UserScreen />} />)}
-          {isLoggedIn && (
-            <Route path="/supply-order" element={<SupplyOrderScreen />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/location" element={<LocationScreen />} />
-          )}
-          {isLoggedIn && (<Route path="/category" element={<Category />} />)}
-          {isLoggedIn &&(<Route path="/challan" element={<Challan />} />)}
-          {isLoggedIn && (
-            <Route path="/description" element={<Description />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/installation" element={<Installation />} />
-          )}
-          {isLoggedIn && (<Route path="/insurance" element={<Insurance />} />)}
-          {isLoggedIn && (<Route path="/invoice" element={<Invoice />} />)}
-          {isLoggedIn && (
-            <Route path="/physicalstatus" element={<PhysicalStatus />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/procurement" element={<Procurement />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/taggingstatus" element={<TaggingStatus />} />
-          )}
-          {isLoggedIn && ( <Route path="/vendor" element={<Vendor />} />)}
-          {isLoggedIn && (
-            <Route path="/add-category" element={<CategoryForm />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/add-location" element={<LocationForm />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/add-challan" element={<ChallanForm />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/add-description" element={<DescriptionForm />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/add-installation" element={<InstallationForm />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/add-insurance" element={<InsuranceForm />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/add-invoice" element={<InvoiceForm />} />
-          )}
-          {isLoggedIn && (
-            <Route
-              path="/add-physical-status"
-              element={<PhysicalStatusForm />}
-            />
-          )}
-          {isLoggedIn && (
-            <Route path="/add-procurement" element={<ProcurementForm />} />
-          )}
-          {isLoggedIn && (
-            <Route path="/add-tagging-status" element={<TaggingStatusForm />} />
-          )}
+          {isLoggedIn && <Route path="/asset-entry" element={<AssetEntryScreen />} />}
+          {isLoggedIn && <Route path="/supply-order" element={<SupplyOrderScreen />} />}
+          {isLoggedIn && <Route path="/add-asset" element={<AddAssetScreen />} />}
+          {isLoggedIn && <Route path="/user" element={<UserScreen />} />}
+          {isLoggedIn && <Route path="/location" element={<LocationScreen />} />}
+          {isLoggedIn && <Route path="/category" element={<Category />} />}
+          {isLoggedIn && <Route path="/challan" element={<Challan />} />}
+          {isLoggedIn && <Route path="/description" element={<Description />} />}
+          {isLoggedIn && <Route path="/installation" element={<Installation />} />}
+          {isLoggedIn && <Route path="/insurance" element={<Insurance />} />}
+          {isLoggedIn && <Route path="/invoice" element={<Invoice />} />}
+          {isLoggedIn && <Route path="/physicalstatus" element={<PhysicalStatus />} />}
+          {isLoggedIn && <Route path="/procurement" element={<Procurement />} />}
+          {isLoggedIn && <Route path="/taggingstatus" element={<TaggingStatus />} />}
+          {isLoggedIn && <Route path="/vendor" element={<Vendor />} />}
+          {isLoggedIn && <Route path="/add-category" element={<CategoryForm />} />}
+          {isLoggedIn && <Route path="/add-location" element={<LocationForm />} />}
+          {isLoggedIn && <Route path="/add-challan" element={<ChallanForm />} />}
+          {isLoggedIn && <Route path="/add-description" element={<DescriptionForm />} />}
+          {isLoggedIn && <Route path="/add-installation" element={<InstallationForm />} />}
+          {isLoggedIn && <Route path="/add-insurance" element={<InsuranceForm />} />}
+          {isLoggedIn && <Route path="/add-invoice" element={<InvoiceForm />} />}
+          {isLoggedIn && <Route path="/add-physical-status" element={<PhysicalStatusForm />} />}
+          {isLoggedIn && <Route path="/add-procurement" element={<ProcurementForm />} />}
+          {isLoggedIn && <Route path="/add-tagging-status" element={<TaggingStatusForm />} />}
           {isLoggedIn && <Route path="/add-vendor" element={<VendorForm />} />}
-          {isLoggedIn && (
-            <Route path="/add-supply-order" element={<SupplyOrderForm />} />
-          )}
+          {isLoggedIn && <Route path="/add-supply-order" element={<SupplyOrderForm />} />}
         </Routes>
       </Router>
     </div>
@@ -156,24 +97,3 @@ function App() {
 }
 
 export default App;
-
-// import React from "react";
-// import { BrowserRouter as Router } from "react-router-dom";
-// import "./App.css";
-// import Sidebar from "./components/Sidebar";
-// import Navbar from "./components/Navbar";
-// import routes from "./Routing";
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <Router>
-//         <Sidebar />
-//         <Navbar />
-//         {routes()}
-//       </Router>
-//     </div>
-//   );
-// }
-
-// export default App;
