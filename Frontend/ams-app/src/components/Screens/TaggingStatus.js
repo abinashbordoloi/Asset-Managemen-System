@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const TaggingStatusScreen = () => {
+  const navigate = useNavigate();
+  const handleAddTaggingStatusClick = () => {
+    navigate("/add-tagging-status");
+  };
   const [taggingStatuses, setTaggingStatuses] = useState([]);
   const [editingTaggingStatusId, setEditingTaggingStatusId] = useState(null);
   const [editedTaggingStatus, setEditedTaggingStatus] = useState({
@@ -60,7 +65,7 @@ const TaggingStatusScreen = () => {
     <div>
       <h2>Tagging Statuses</h2>
       
-      <Button variant="primary" href="/add-tagging-status" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddTaggingStatusClick} style={{ marginBottom: "10px" }}>
         Add New Tagging Status
       </Button>
 

@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const VendorScreen = () => {
+  const navigate = useNavigate();
+  const handleAddVendorClick = () => {
+    navigate("/add-vendor");
+  };
   const [vendors, setVendors] = useState([]);
   const [editingVendorId, setEditingVendorId] = useState(null);
   const [editedVendor, setEditedVendor] = useState({
@@ -64,7 +69,7 @@ const VendorScreen = () => {
     <div>
       <h2>Vendors</h2>
       
-      <Button variant="primary" href="/add-vendor" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddVendorClick} style={{ marginBottom: "10px" }}>
         Add New Vendor
       </Button>
 

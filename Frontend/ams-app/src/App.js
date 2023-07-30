@@ -61,11 +61,10 @@ function App() {
               isLoggedIn ? <Navigate to="/asset-entry" /> : <LoginForm onLogin={handleLogin} />
             }
           />
-
-          {/* If isLoggedIn is true, show the AssetEntryScreen */}
+          {/*If isLoggedIn is true, show the AssetEntryScreen */}
           {isLoggedIn && <Route path="/asset-entry" element={<AssetEntryScreen />} />}
           {isLoggedIn && <Route path="/supply-order" element={<SupplyOrderScreen />} />}
-          {isLoggedIn && <Route path="/add-asset" element={<AddAssetScreen />} />}
+          {isLoggedIn && <Route path="/add-asset" element={<AddAssetScreen />} />} 
           {isLoggedIn && <Route path="/user" element={<UserScreen />} />}
           {isLoggedIn && <Route path="/location" element={<LocationScreen />} />}
           {isLoggedIn && <Route path="/category" element={<Category />} />}

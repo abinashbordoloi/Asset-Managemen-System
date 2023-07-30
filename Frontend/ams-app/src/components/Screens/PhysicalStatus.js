@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const PhysicalStatusScreen = () => {
+  const navigate = useNavigate();
+  const handleAddPhysicalStatusClick = () => {
+    navigate("/add-physical-status");
+  };
   const [physicalStatuses, setPhysicalStatuses] = useState([]);
   const [editingPhysicalStatusId, setEditingPhysicalStatusId] = useState(null);
   const [editedPhysicalStatus, setEditedPhysicalStatus] = useState({
@@ -60,7 +65,7 @@ const PhysicalStatusScreen = () => {
     <div>
       <h2>Physical Statuses</h2>
       
-      <Button variant="primary" href="/add-physical-status" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddPhysicalStatusClick} style={{ marginBottom: "10px" }}>
         Add New Physical Status
       </Button>
 

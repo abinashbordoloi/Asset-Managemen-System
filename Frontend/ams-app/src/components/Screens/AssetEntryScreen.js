@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
-//import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AssetEntryScreen = () => {

@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const InsuranceScreen = () => {
+  const navigate = useNavigate();
+  const handleAddInsuranceClick = () => {
+    navigate("/add-insurance");
+  };
   const [insurances, setInsurances] = useState([]);
   const [editingInsuranceId, setEditingInsuranceId] = useState(null);
   const [editedInsurance, setEditedInsurance] = useState({
@@ -64,7 +69,7 @@ const InsuranceScreen = () => {
     <div>
       <h2>Insurances</h2>
       
-      <Button variant="primary" href="/add-insurance" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddInsuranceClick} style={{ marginBottom: "10px" }}>
         Add New Insurance
       </Button>
 

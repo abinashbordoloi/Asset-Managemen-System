@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const InvoiceScreen = () => {
+  const navigate = useNavigate();
+  const handleAddInvoiceClick = () => {
+    navigate("/add-invoice");
+  };
   const [invoices, setInvoices] = useState([]);
   const [editingInvoiceId, setEditingInvoiceId] = useState(null);
   const [editedInvoice, setEditedInvoice] = useState({
@@ -60,7 +65,7 @@ const InvoiceScreen = () => {
     <div>
       <h2>Invoices</h2>
       
-      <Button variant="primary" href="/add-invoice" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddInvoiceClick} style={{ marginBottom: "10px" }}>
         Add New Invoice
       </Button>
 

@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const ChallanScreen = () => {
+  const navigate = useNavigate();
+
+  const handleAddChallanClick = () => {
+    navigate("/add-challan");
+  };
   const [challans, setChallans] = useState([]);
   const [editingChallanId, setEditingChallanId] = useState(null);
   const [editedChallan, setEditedChallan] = useState({
@@ -60,7 +66,7 @@ const ChallanScreen = () => {
     <div>
       <h2>Challans</h2>
 
-      <Button variant="primary" href="/add-challan" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddChallanClick} style={{ marginBottom: "10px" }}>
         Add New Challan details
       </Button>
 

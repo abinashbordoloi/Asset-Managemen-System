@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const ProcurementScreen = () => {
+  const navigate = useNavigate();
+  const handleAddProcurementClick = () => {
+    navigate("/add-procurement");
+  };
   const [procurements, setProcurements] = useState([]);
   const [editingProcurement, setEditingProcurement] = useState(null);
   const [updatedProcurement, setUpdatedProcurement] = useState({
@@ -94,9 +98,9 @@ const ProcurementScreen = () => {
   return (
     <div>
       <h1>Procurements</h1>
-      <Link to="/add-procurement">
-        <Button variant="primary">Add New Procurement</Button>
-      </Link>
+      <Button variant="primary" onClick={handleAddProcurementClick} style={{ marginBottom: "10px" }}>
+        Add Procurement
+      </Button>
 
       <Table striped bordered hover>
         <thead>

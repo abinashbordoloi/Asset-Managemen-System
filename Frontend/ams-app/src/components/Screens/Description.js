@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const DescriptionScreen = () => {
+  const navigate = useNavigate();
+  const handleAddDescriptionClick = () => {
+    navigate("/add-description");
+  };
   const [descriptions, setDescriptions] = useState([]);
   const [editingDescriptionId, setEditingDescriptionId] = useState(null);
   const [editedDescription, setEditedDescription] = useState({
@@ -62,7 +67,7 @@ const DescriptionScreen = () => {
     <div>
       <h2>Descriptions</h2>
 
-      <Button variant="primary" href="/add-description" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddDescriptionClick} style={{ marginBottom: "10px" }}>
         Add New Description
       </Button>
 

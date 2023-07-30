@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Table, Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const SupplyOrderScreen = () => {
+  const navigate = useNavigate();
+  const handleAddSupplyOrderClick = () => {
+    navigate("/add-supply-order");
+  };
   const [supplyOrders, setSupplyOrders] = useState([]);
   const [editingOrderId, setEditingOrderId] = useState(null);
   const [editedOrder, setEditedOrder] = useState({
@@ -57,7 +62,7 @@ const SupplyOrderScreen = () => {
   return (
     <div>
       <h2>Supply Orders</h2>
-      <Button variant="primary" href="/add-supply-order" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddSupplyOrderClick} style={{ marginBottom: "10px" }}>
         Add New Supply Order
       </Button>
       <Table striped bordered hover>

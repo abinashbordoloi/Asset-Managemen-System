@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Table, Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const LocationScreen = () => {
+  const navigate = useNavigate();
+  const handleAddLocationClick = () => {
+    navigate("/add-location");
+  };
   const [locations, setLocations] = useState([]);
   const [editingLocationId, setEditingLocationId] = useState(null);
   const [editedLocation, setEditedLocation] = useState({
@@ -63,7 +68,7 @@ const LocationScreen = () => {
   return (
     <div>
       <h2>Locations</h2>
-      <Button variant="primary" href="/add-location" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddLocationClick} style={{ marginBottom: "10px" }}>
         Add New Location
       </Button>
       <Table striped bordered hover>

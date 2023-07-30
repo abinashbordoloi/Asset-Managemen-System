@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const InstallationScreen = () => {
+  const navigate = useNavigate();
+  const handleAddInstallationClick = () => {
+    navigate("/add-installation");
+  };
   const [installations, setInstallations] = useState([]);
   const [editingInstallationId, setEditingInstallationId] = useState(null);
   const [editedInstallation, setEditedInstallation] = useState({
@@ -61,7 +66,7 @@ const InstallationScreen = () => {
     <div>
       <h2>Installations</h2>
       
-      <Button variant="primary" href="/add-installation" style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddInstallationClick} style={{ marginBottom: "10px" }}>
         Add New Installation
       </Button>
 
