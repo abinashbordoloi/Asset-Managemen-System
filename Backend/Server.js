@@ -1,3 +1,4 @@
+//@ts-nocheck
 const { Pool } = require("pg");
 const express = require("express");
 const cors = require("cors");
@@ -14,6 +15,9 @@ const pool = new Pool({
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+
+
 
 
 
@@ -938,6 +942,59 @@ app.put('/api/public/Vendor/:id', async (req, res) => {
 });
 
 
+{/*                         User Screen                            */} 
+//to display users
+app.get("/api/public/users", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM public.passwords");
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+//to add user
+// app.post("/api/public/add-user", async (req, res) => {
+//   try {
+//     const { username, password, role } = req.body;
+
+//     // Check if the username already exists in the database
+//     const existingUser = await pool.query(
+//       "SELECT * FROM public.passwords WHERE username = $1",
+//       [username]
+//     );
+
+//     if (existingUser.rows.length > 0) {
+//       return res.status(409).json({ error: "Username already exists" });
+//     }
+
+//     // Generate a salt and hash the password
+//     const saltRounds = 10;
+//     const salt = await bcrypt.genSalt(saltRounds);
+//     const hashedPassword = await bcrypt.hash(password, salt);
+
+//     // Insert the new user data into the database
+//     await pool.query(
+//       "INSERT INTO public.passwords (username, password_hash, role) VALUES ($1, $2, $3)",
+//       [username, hashedPassword, role]
+//     );
+
+//     res.status(201).json({ message: "User added successfully" });
+//   } catch (error) {
+//     console.error("Error adding user:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+
+//     res.status(201).json({ message: "User added successfully" });
+//   } catch (error) {
+//     console.error("Error adding user:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+
+
 {/*                         Login Screen                            */} 
            
 
@@ -972,7 +1029,7 @@ app.post("/api/public/passwords", async (req, res) => {
   }
 });
 
-// Logout Screen
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

@@ -1,0 +1,52 @@
+/* LoginForm.css */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  #main-outer-div {
+    background-color: #eee8e5;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  #logo-img {
+    width: 300px;
+    height: 170px;
+  }
+  
+  .title {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .login-form-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .alert {
+    color: red;
+    margin-bottom: 10px;
+  }
+  
+  .loading {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+.blue-button {
+    background-color: blue;
+    color: white;
+  }
+  

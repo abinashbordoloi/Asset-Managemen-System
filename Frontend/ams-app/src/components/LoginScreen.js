@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// import Navbar from "../components/Navbar";
-// import { useHistory } from "react-router-dom";
+import { css } from "@emotion/react";
+import { ScaleLoader } from "react-spinners";
+import "./LoginScreen.css";
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
 
 const LoginForm = ({ onLogin }) => {
   const [username, setUsername] = useState("");
@@ -40,12 +47,12 @@ const LoginForm = ({ onLogin }) => {
       );
 
       if (response.status === 200) {
-        // Login successful, navigate to the Navbar page
+        
         console.log("User authenticated successfully");
         onLogin();
         navigate("/asset-entry");
       } else {
-        // Login failed, display error message
+        
         setError("Invalid username or password");
       }
     } catch (error) {
@@ -57,48 +64,60 @@ const LoginForm = ({ onLogin }) => {
   };
 
   return (
-    <div className="d-flex flex-column align-items-center">
-      <h2 className="text-center">Asset Management System</h2>
-      <img
-        src="https://assets.sentinelassam.com/h-upload/2022/06/15/1600x960_355184-neepco.jpg"
-        alt="NEEPCO"
-        width="300"
-        height="170"
-      />
-      <div className="container" style={{ maxWidth: "500px" }}>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="exampleInputEmail1" className="form-label">
-              Employee Id
-            </label>
+    <div className="container">
+      <div id="main-outer-div">
+        <div id="logo-div">
+          <img
+            id="logo-img"
+            // src="https://assets.sentinelassam.com/h-upload/2022/06/15/1600x960_355184-neepco.jpg"
+            src="./logo.ico"
+            alt="NEEPCO"
+            width="300"
+            height="170"
+          />
+        </div>
+        <div id="title-div" style={{ marginTop: "20px" }}>
+          <h4 className="title">ASSET MANAGEMENT SYSTEM</h4>
+        </div>
+
+        <div id="outer-login-form-div">
+          <form onSubmit={handleSubmit}>
             <input
+              className="login-form-input "
               type="text"
-              className="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
+              placeholder="Employee Id"
+              required
               value={username}
               onChange={handleUsernameChange}
             />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">
-              Password
-            </label>
             <input
+              className="login-form-input"
               type="password"
-              className="form-control"
-              id="exampleInputPassword1"
+              placeholder="Password"
+              required
               value={password}
               onChange={handlePasswordChange}
             />
-          </div>
+            {error && <p className="alert alert-danger">{error}</p>}
+            <input
+              className="login-form-input blue-button"
+              type="submit"
+              value={loading ? "Loading..." : "Submit"}
+              id="submitBtn"
+              disabled={loading}
+            />
+          </form>
+        </div>
 
-          {error && <div className="alert alert-danger">{error}</div>}
-
-          <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? "Loading..." : "Submit"}
-          </button>
-        </form>
+        <div className="loading">
+          <ScaleLoader
+            css={override}
+            sizeUnit={"px"}
+            size={150}
+            color={"#123abc"}
+            loading={loading}
+          />
+        </div>
       </div>
     </div>
   );

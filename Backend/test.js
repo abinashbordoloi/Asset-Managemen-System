@@ -36,3 +36,4 @@ hashPassword(password)
 //     "$2b$10$QxP6FiqctSAlc5UtO/fuaefUWSUNYhC7PtRvV5YYDyvFeDniijCY6"
 //   )
 //   )
+module.exports = { hashPassword };

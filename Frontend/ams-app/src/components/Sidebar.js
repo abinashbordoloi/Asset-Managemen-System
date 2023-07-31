@@ -7,7 +7,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './Sidebar.css';
 
-const Sidebar = ({ handleLogout }) => {
+const Sidebar = () => {
+  const handleLogout = () => {
+
+  //clearuser session etc needs to be added
+    window.location.href = "/login"
+    alert("Logout clicked!");
+  };
+  
   const [showSidebar, setShowSidebar] = useState(false);
 
   const toggleSidebar = () => {

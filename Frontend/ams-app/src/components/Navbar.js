@@ -1,44 +1,31 @@
 import React from "react";
-// import { Link } from "react-router-dom";
-import { Navbar, Nav } from "react-bootstrap";
-//import "./Navbar.css"; // Import the CSS file
+import { Navbar, Nav , Button} from "react-bootstrap"; 
+import Logo from "./logo.ico"
+function NavbarComponent({ username }) {
 
-function NavbarComponent() {
   const handleLogout = () => {
-    // Perform logout logic here
 
-    // Redirect to the login page
-    window.location.href = "/login";
-  };
+    //clearuser session etc needs to be added
+      window.location.href = "/login"
+      
+    };
 
   return (
-    <Navbar bg="light" expand="lg">
-      <Navbar.Brand></Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
-          {/* <Nav.Link as={Link} to="/" active>
-            Home
-          </Nav.Link> */}
-          {/* <Nav.Link as={Link} to="/asset" active>
-            Asset
-          </Nav.Link>
-          <Nav.Link as={Link} to="/supply-order">
-            SupplyOrder
-          </Nav.Link>
-          <Nav.Link as={Link} to="/user">
-            Users
-          </Nav.Link>
-          <Nav.Link as={Link} to="/location">
-            Location
-          </Nav.Link> */}
-           <Nav>
-            <Nav.Link href="/" onClick={handleLogout}>
-              Logout
-            </Nav.Link> 
-          </Nav> 
-        </Nav>
-      </Navbar.Collapse>
+    <Navbar bg="medium" expand="lg" className="d-flex justify-content-between align-items-center" style={{ background: "#EAEAEA" }}>
+     
+      <div className="d-flex align-items-center ml-3" style={{ paddingLeft: "40px" }}>
+        <img src={Logo} alt="Logo" width="30" height="30" className="mr-2" />
+        <Navbar.Brand style={{ paddingLeft: "10px" }}>ASSET MANAGEMENT SYSTEM</Navbar.Brand>
+      </div>
+
+{/* Username of Logged-in User  */}
+      <div>{username}</div>
+
+      <Nav>
+      <Nav style={{ paddingRight: "10px" }}>
+      <Button variant="danger" onClick={handleLogout}  >Logout</Button>
+      </Nav>
+      </Nav>
     </Navbar>
   );
 }

@@ -31,7 +31,7 @@ import TaggingStatusForm from "./components/Screens/TaggingStatusForm";
 import ProcurementForm from "./components/Screens/ProcurementForm";
 import PhysicalStatusForm from "./components/Screens/PhysicalStatusForm";
 import SupplyOrderForm from "./components/Screens/SupplyOrderForm";
-
+import UserForm from "./components/Screens/UserForm";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -39,6 +39,7 @@ function App() {
     setIsLoggedIn(true);
     console.log("Logged in successfully!");
   };
+
 
   return (
     <div className="App">
@@ -89,6 +90,7 @@ function App() {
           {isLoggedIn && <Route path="/add-tagging-status" element={<TaggingStatusForm />} />}
           {isLoggedIn && <Route path="/add-vendor" element={<VendorForm />} />}
           {isLoggedIn && <Route path="/add-supply-order" element={<SupplyOrderForm />} />}
+          {isLoggedIn && <Route path="/add-user" element={<UserForm />} />}
         </Routes>
       </Router>
     </div>
