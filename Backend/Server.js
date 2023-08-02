@@ -1,14 +1,21 @@
 //@ts-nocheck
+
 const { Pool } = require("pg");
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+
+dotenv.config();
+const jwtSecret = process.env.JWT_SECRET;
+console.log("JWT secret:", jwtSecret);
 
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
-  database: "NEEPCO",
-  password: "Iamsroita18@",
+  database: "Neepco",
+  password: "abinash",
   port: 5432,
 });
 
@@ -16,13 +23,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-
-
-
-
-
-
-{/*                          Asset Screen                                     */}
+{
+  /*                          Asset Screen                                     */
+}
 
 // To get assets
 app.get("/api/public/Asset", async (req, res) => {
@@ -96,7 +99,10 @@ app.put("/api/public/Asset/:id", async (req, res) => {
 app.delete("/api/public/Asset/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const deleteAsset = await pool.query('DELETE FROM public."Asset" WHERE id = $1', [id]);
+    const deleteAsset = await pool.query(
+      'DELETE FROM public."Asset" WHERE id = $1',
+      [id]
+    );
     res.status(204).send(); // Use 204 No Content for successful deletion
   } catch (err) {
     console.error("Error deleting asset:", err);
@@ -127,50 +133,95 @@ app.post("/api/public/add-Asset", async (req, res) => {
     } = req.body;
 
     // Validate if the selected foreign keys exist in their respective tables
-    const descriptionExists = await pool.query('SELECT * FROM public."Description" WHERE id = $1', [description]);
-    const locationExists = await pool.query('SELECT * FROM public."Location" WHERE id = $1', [location]);
-    const categoryExists = await pool.query('SELECT * FROM public."Category" WHERE id = $1', [category]);
-    const procurementExists = await pool.query('SELECT * FROM public."Procurement" WHERE id = $1', [procurement]);
-    const installationExists = await pool.query('SELECT * FROM public."Installation" WHERE id = $1', [installation]);
-    const insuranceExists = await pool.query('SELECT * FROM public."Insurance" WHERE id = $1', [insurance]);
-    const taggingStatusExists = await pool.query('SELECT * FROM public."TaggingStatus" WHERE id = $1', [tagging_status]);
-    const supplyOrderExists = await pool.query('SELECT * FROM public."SupplyOrder" WHERE id = $1', [supplyOrder]);
-    const challanExists = await pool.query('SELECT * FROM public."Challan" WHERE id = $1', [challan]);
+    const descriptionExists = await pool.query(
+      'SELECT * FROM public."Description" WHERE id = $1',
+      [description]
+    );
+    const locationExists = await pool.query(
+      'SELECT * FROM public."Location" WHERE id = $1',
+      [location]
+    );
+    const categoryExists = await pool.query(
+      'SELECT * FROM public."Category" WHERE id = $1',
+      [category]
+    );
+    const procurementExists = await pool.query(
+      'SELECT * FROM public."Procurement" WHERE id = $1',
+      [procurement]
+    );
+    const installationExists = await pool.query(
+      'SELECT * FROM public."Installation" WHERE id = $1',
+      [installation]
+    );
+    const insuranceExists = await pool.query(
+      'SELECT * FROM public."Insurance" WHERE id = $1',
+      [insurance]
+    );
+    const taggingStatusExists = await pool.query(
+      'SELECT * FROM public."TaggingStatus" WHERE id = $1',
+      [tagging_status]
+    );
+    const supplyOrderExists = await pool.query(
+      'SELECT * FROM public."SupplyOrder" WHERE id = $1',
+      [supplyOrder]
+    );
+    const challanExists = await pool.query(
+      'SELECT * FROM public."Challan" WHERE id = $1',
+      [challan]
+    );
 
     if (descriptionExists.rows.length === 0) {
-      return res.status(400).json({ error: "Selected description does not exist." });
+      return res
+        .status(400)
+        .json({ error: "Selected description does not exist." });
     }
 
     if (locationExists.rows.length === 0) {
-      return res.status(400).json({ error: "Selected location does not exist." });
+      return res
+        .status(400)
+        .json({ error: "Selected location does not exist." });
     }
 
     if (categoryExists.rows.length === 0) {
-      return res.status(400).json({ error: "Selected category does not exist." });
+      return res
+        .status(400)
+        .json({ error: "Selected category does not exist." });
     }
 
     if (procurementExists.rows.length === 0) {
-      return res.status(400).json({ error: "Selected procurement does not exist." });
+      return res
+        .status(400)
+        .json({ error: "Selected procurement does not exist." });
     }
 
     if (installationExists.rows.length === 0) {
-      return res.status(400).json({ error: "Selected installation does not exist." });
+      return res
+        .status(400)
+        .json({ error: "Selected installation does not exist." });
     }
 
     if (insuranceExists.rows.length === 0) {
-      return res.status(400).json({ error: "Selected insurance does not exist." });
+      return res
+        .status(400)
+        .json({ error: "Selected insurance does not exist." });
     }
 
     if (taggingStatusExists.rows.length === 0) {
-      return res.status(400).json({ error: "Selected tagging status does not exist." });
+      return res
+        .status(400)
+        .json({ error: "Selected tagging status does not exist." });
     }
 
     if (supplyOrderExists.rows.length === 0) {
-      return res.status(400).json({ error: "Selected supply order does not exist." });
+      return res
+        .status(400)
+        .json({ error: "Selected supply order does not exist." });
     }
 
     if (challanExists.rows.length === 0) {
-      return res.status(400).json({ error: "Selected challan does not exist." });
+      return res
+        .status(400)
+        .json({ error: "Selected challan does not exist." });
     }
 
     // If all foreign keys exist, insert the asset record
@@ -219,17 +270,15 @@ app.post("/api/public/add-Asset", async (req, res) => {
     res.status(201).json(newAsset.rows[0]);
   } catch (error) {
     console.error("Error adding asset:", error);
-    res.status(500).json({ error: "Failed to add asset. Please try again later." });
+    res
+      .status(500)
+      .json({ error: "Failed to add asset. Please try again later." });
   }
 });
 
-
-
-
-
-
-
-{/*                          Supply Order Screen                                     */} 
+{
+  /*                          Supply Order Screen                                     */
+}
 
 //to get supply order
 app.get("/api/public/SupplyOrder", async (req, res) => {
@@ -243,7 +292,7 @@ app.get("/api/public/SupplyOrder", async (req, res) => {
 });
 
 // to update supply order
-app.put('/api/public/SupplyOrder/:id', async (req, res) => {
+app.put("/api/public/SupplyOrder/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { supply_order_no, supply_order_date, price } = req.body;
@@ -254,17 +303,22 @@ app.put('/api/public/SupplyOrder/:id', async (req, res) => {
       WHERE id = $4
     `;
 
-    await pool.query(updateQuery, [supply_order_no, supply_order_date, price, id]);
+    await pool.query(updateQuery, [
+      supply_order_no,
+      supply_order_date,
+      price,
+      id,
+    ]);
 
-    res.status(200).json({ message: 'Supply order updated successfully!' });
+    res.status(200).json({ message: "Supply order updated successfully!" });
   } catch (error) {
-    console.error('Error updating supply order:', error);
-    res.status(500).json({ error: 'Failed to update supply order.' });
+    console.error("Error updating supply order:", error);
+    res.status(500).json({ error: "Failed to update supply order." });
   }
 });
 
 //to add supply order
-app.post('/api/public/add-SupplyOrder', async (req, res) => {
+app.post("/api/public/add-SupplyOrder", async (req, res) => {
   try {
     const { supply_order_no, supply_order_date, price } = req.body;
     const insertSupplyOrderQuery = `
@@ -277,18 +331,18 @@ app.post('/api/public/add-SupplyOrder', async (req, res) => {
     res.status(201).json(newSupplyOrder.rows[0]);
   } catch (error) {
     console.error("Error adding Supply Order:", error);
-    res.status(500).json({ error: "Failed to add Supply Order. Please try again later." });
+    res
+      .status(500)
+      .json({ error: "Failed to add Supply Order. Please try again later." });
   }
 });
 
-
-
-
-
-{/*                          Location Entry Screen                                     */}     
+{
+  /*                          Location Entry Screen                                     */
+}
 
 //to get location
-app.get('/api/public/Location', async (req, res) => {
+app.get("/api/public/Location", async (req, res) => {
   try {
     const fetchLocationsQuery = `
       SELECT * FROM public."Location"
@@ -296,13 +350,13 @@ app.get('/api/public/Location', async (req, res) => {
     const locations = await pool.query(fetchLocationsQuery);
     res.status(200).json(locations.rows);
   } catch (error) {
-    console.error('Error fetching locations:', error);
-    res.status(500).json({ error: 'Failed to fetch locations.' });
+    console.error("Error fetching locations:", error);
+    res.status(500).json({ error: "Failed to fetch locations." });
   }
 });
 
 //to add location
-app.post('/api/public/add-Location', async (req, res) => {
+app.post("/api/public/add-Location", async (req, res) => {
   try {
     const { name, address, city, state, country } = req.body;
     const insertLocationQuery = `
@@ -315,12 +369,14 @@ app.post('/api/public/add-Location', async (req, res) => {
     res.status(201).json(newLocation.rows[0]);
   } catch (error) {
     console.error("Error adding location:", error);
-    res.status(500).json({ error: "Failed to add location. Please try again later." });
+    res
+      .status(500)
+      .json({ error: "Failed to add location. Please try again later." });
   }
 });
 
 //to edit location
-app.put('/api/public/Location/:id', async (req, res) => {
+app.put("/api/public/Location/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { name, address, city, state, country } = req.body;
@@ -334,19 +390,16 @@ app.put('/api/public/Location/:id', async (req, res) => {
 
     await pool.query(updateQuery, [name, address, city, state, country, id]);
 
-    res.status(200).json({ message: 'Location updated successfully!' });
+    res.status(200).json({ message: "Location updated successfully!" });
   } catch (error) {
-    console.error('Error updating location:', error);
-    res.status(500).json({ error: 'Failed to update location.' });
+    console.error("Error updating location:", error);
+    res.status(500).json({ error: "Failed to update location." });
   }
 });
 
-
-
-
-
-{/*                          Category Screen                            */}                                           
-
+{
+  /*                          Category Screen                            */
+}
 
 //to get category
 app.get("/api/public/Category", async (req, res) => {
@@ -357,13 +410,13 @@ app.get("/api/public/Category", async (req, res) => {
     const categories = await pool.query(fetchCategoriesQuery);
     res.status(200).json(categories.rows);
   } catch (error) {
-    console.error('Error fetching categories:', error);
-    res.status(500).json({ error: 'Failed to fetch categories.' });
+    console.error("Error fetching categories:", error);
+    res.status(500).json({ error: "Failed to fetch categories." });
   }
 });
- 
+
 //to add category
-app.post('/api/public/add-Category', async (req, res) => {
+app.post("/api/public/add-Category", async (req, res) => {
   try {
     const { name, description } = req.body;
     const insertCategoryQuery = `
@@ -376,12 +429,14 @@ app.post('/api/public/add-Category', async (req, res) => {
     res.status(201).json(newCategory.rows[0]);
   } catch (error) {
     console.error("Error adding category:", error);
-    res.status(500).json({ error: "Failed to add category. Please try again later." });
+    res
+      .status(500)
+      .json({ error: "Failed to add category. Please try again later." });
   }
 });
 
 //to update category
-app.put('/api/public/Category/:id', async (req, res) => {
+app.put("/api/public/Category/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { name, description } = req.body;
@@ -393,16 +448,16 @@ app.put('/api/public/Category/:id', async (req, res) => {
 
     await pool.query(updateQuery, [name, description, id]);
 
-    res.status(200).json({ message: 'Category updated successfully!' });
+    res.status(200).json({ message: "Category updated successfully!" });
   } catch (error) {
-    console.error('Error updating category:', error);
-    res.status(500).json({ error: 'Failed to update category.' });
+    console.error("Error updating category:", error);
+    res.status(500).json({ error: "Failed to update category." });
   }
 });
 
-
-
-{/*                          Challan Screen                            */}  
+{
+  /*                          Challan Screen                            */
+}
 
 //to get challan (check)
 app.get("/api/public/Challan", async (req, res) => {
@@ -413,13 +468,13 @@ app.get("/api/public/Challan", async (req, res) => {
     const challans = await pool.query(fetchChallansQuery);
     res.status(200).json(challans.rows);
   } catch (error) {
-    console.error('Error fetching challans:', error);
-    res.status(500).json({ error: 'Failed to fetch challans.' });
+    console.error("Error fetching challans:", error);
+    res.status(500).json({ error: "Failed to fetch challans." });
   }
 });
 
 //to add new challan
-app.post('/api/public/add-Challan', async (req, res) => {
+app.post("/api/public/add-Challan", async (req, res) => {
   try {
     const { challan_details } = req.body;
 
@@ -434,14 +489,15 @@ app.post('/api/public/add-Challan', async (req, res) => {
     res.status(201).json(newChallan.rows[0]);
   } catch (error) {
     console.error("Error adding challan:", error);
-    res.status(500).json({ error: "Failed to add challan. Please try again later." });
+    res
+      .status(500)
+      .json({ error: "Failed to add challan. Please try again later." });
   }
 });
 
-
 //to update challan
 
-app.put('/api/public/Challan/:id', async (req, res) => {
+app.put("/api/public/Challan/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { challan_details } = req.body;
@@ -453,14 +509,16 @@ app.put('/api/public/Challan/:id', async (req, res) => {
 
     await pool.query(updateQuery, [challan_details, id]);
 
-    res.status(200).json({ message: 'Challan updated successfully!' });
+    res.status(200).json({ message: "Challan updated successfully!" });
   } catch (error) {
-    console.error('Error updating challan:', error);
-    res.status(500).json({ error: 'Failed to update challan.' });
+    console.error("Error updating challan:", error);
+    res.status(500).json({ error: "Failed to update challan." });
   }
 });
 
-{/*                          Description Screen                            */}  
+{
+  /*                          Description Screen                            */
+}
 
 //to get description
 app.get("/api/public/Description", async (req, res) => {
@@ -471,13 +529,13 @@ app.get("/api/public/Description", async (req, res) => {
     const descriptions = await pool.query(fetchDescriptionsQuery);
     res.status(200).json(descriptions.rows);
   } catch (error) {
-    console.error('Error fetching descriptions:', error);
-    res.status(500).json({ error: 'Failed to fetch descriptions.' });
+    console.error("Error fetching descriptions:", error);
+    res.status(500).json({ error: "Failed to fetch descriptions." });
   }
 });
 
 //to add description
-app.post('/api/public/add-Description', async (req, res) => {
+app.post("/api/public/add-Description", async (req, res) => {
   try {
     const { make, specification, model } = req.body;
     const insertDescriptionQuery = `
@@ -490,12 +548,14 @@ app.post('/api/public/add-Description', async (req, res) => {
     res.status(201).json(newDescription.rows[0]);
   } catch (error) {
     console.error("Error adding description:", error);
-    res.status(500).json({ error: "Failed to add description. Please try again later." });
+    res
+      .status(500)
+      .json({ error: "Failed to add description. Please try again later." });
   }
 });
 
 //to update description
-app.put('/api/public/Description/:id', async (req, res) => {
+app.put("/api/public/Description/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { make, specification, model } = req.body;
@@ -507,14 +567,16 @@ app.put('/api/public/Description/:id', async (req, res) => {
 
     await pool.query(updateQuery, [make, specification, model, id]);
 
-    res.status(200).json({ message: 'Description updated successfully!' });
+    res.status(200).json({ message: "Description updated successfully!" });
   } catch (error) {
-    console.error('Error updating description:', error);
-    res.status(500).json({ error: 'Failed to update description.' });
+    console.error("Error updating description:", error);
+    res.status(500).json({ error: "Failed to update description." });
   }
 });
 
-{/*                         Installation Screen                            */} 
+{
+  /*                         Installation Screen                            */
+}
 
 // to get installations
 app.get("/api/public/Installation", async (req, res) => {
@@ -544,7 +606,9 @@ app.post("/api/public/add-Installation", async (req, res) => {
     res.status(201).json(newInstallation.rows[0]);
   } catch (error) {
     console.error("Error adding installation:", error);
-    res.status(500).json({ error: "Failed to add installation. Please try again later." });
+    res
+      .status(500)
+      .json({ error: "Failed to add installation. Please try again later." });
   }
 });
 
@@ -568,9 +632,9 @@ app.put("/api/public/Installation/:id", async (req, res) => {
   }
 });
 
-
-
-{/*                         Insurance Screen                            */} 
+{
+  /*                         Insurance Screen                            */
+}
 
 //to get insurance
 app.get("/api/public/Insurance", async (req, res) => {
@@ -586,22 +650,35 @@ app.get("/api/public/Insurance", async (req, res) => {
   }
 });
 
-
 //to add new insurance
 app.post("/api/public/add-Insurance", async (req, res) => {
   try {
-    const { start_date, end_date, insurance_company, insurance_no, insurance_period } = req.body;
+    const {
+      start_date,
+      end_date,
+      insurance_company,
+      insurance_no,
+      insurance_period,
+    } = req.body;
     const insertInsuranceQuery = `
       INSERT INTO public."Insurance" (start_date, end_date, insurance_company, insurance_no, insurance_period)
       VALUES ($1, $2, $3, $4, $5)
       RETURNING *
     `;
-    const values = [start_date, end_date, insurance_company, insurance_no, insurance_period];
+    const values = [
+      start_date,
+      end_date,
+      insurance_company,
+      insurance_no,
+      insurance_period,
+    ];
     const newInsurance = await pool.query(insertInsuranceQuery, values);
     res.status(201).json(newInsurance.rows[0]);
   } catch (error) {
     console.error("Error adding insurance:", error);
-    res.status(500).json({ error: "Failed to add insurance. Please try again later." });
+    res
+      .status(500)
+      .json({ error: "Failed to add insurance. Please try again later." });
   }
 });
 
@@ -609,14 +686,27 @@ app.post("/api/public/add-Insurance", async (req, res) => {
 app.put("/api/public/Insurance/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { start_date, end_date, insurance_company, insurance_no, insurance_period } = req.body;
+    const {
+      start_date,
+      end_date,
+      insurance_company,
+      insurance_no,
+      insurance_period,
+    } = req.body;
     const updateQuery = `
       UPDATE public."Insurance"
       SET start_date = $1, end_date = $2, insurance_company = $3, insurance_no = $4, insurance_period = $5
       WHERE id = $6
     `;
 
-    await pool.query(updateQuery, [start_date, end_date, insurance_company, insurance_no, insurance_period, id]);
+    await pool.query(updateQuery, [
+      start_date,
+      end_date,
+      insurance_company,
+      insurance_no,
+      insurance_period,
+      id,
+    ]);
 
     res.status(200).json({ message: "Insurance updated successfully!" });
   } catch (error) {
@@ -625,8 +715,9 @@ app.put("/api/public/Insurance/:id", async (req, res) => {
   }
 });
 
-
-{/*                         Invoice Screen                            */}
+{
+  /*                         Invoice Screen                            */
+}
 // Get all invoices
 app.get("/api/public/Invoice", async (req, res) => {
   try {
@@ -655,7 +746,9 @@ app.post("/api/public/add-Invoice", async (req, res) => {
     res.status(201).json(newInvoice.rows[0]);
   } catch (error) {
     console.error("Error adding invoice:", error);
-    res.status(500).json({ error: "Failed to add invoice. Please try again later." });
+    res
+      .status(500)
+      .json({ error: "Failed to add invoice. Please try again later." });
   }
 });
 
@@ -679,7 +772,9 @@ app.put("/api/public/Invoice/:id", async (req, res) => {
   }
 });
 
-{/*                         Physical Status Screen                            */} 
+{
+  /*                         Physical Status Screen                            */
+}
 //to get physical Status
 app.get("/api/public/PhysicalStatus", async (req, res) => {
   try {
@@ -705,11 +800,18 @@ app.post("/api/public/add-PhysicalStatus", async (req, res) => {
       RETURNING *
     `;
     const values = [status];
-    const newPhysicalStatus = await pool.query(insertPhysicalStatusQuery, values);
+    const newPhysicalStatus = await pool.query(
+      insertPhysicalStatusQuery,
+      values
+    );
     res.status(201).json(newPhysicalStatus.rows[0]);
   } catch (error) {
     console.error("Error adding physical status:", error);
-    res.status(500).json({ error: "Failed to add physical status. Please try again later." });
+    res
+      .status(500)
+      .json({
+        error: "Failed to add physical status. Please try again later.",
+      });
   }
 });
 
@@ -733,7 +835,9 @@ app.put("/api/public/PhysicalStatus/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to update physical status." });
   }
 });
-{/*                        Procurement Screen */}
+{
+  /*                        Procurement Screen */
+}
 // to get procurements
 app.get("/api/public/Procurement", async (req, res) => {
   try {
@@ -761,7 +865,15 @@ app.put("/api/public/Procurement/:procurement_id", async (req, res) => {
       `UPDATE public."Procurement"
        SET supply_order_id = $1, purchase_date = $2, purchase_price = $3, vendor_id = $4, invoice_id = $5, challan_id = $6
        WHERE procurement_id = $7`,
-      [supply_order_id, purchase_date, purchase_price, vendor_id, invoice_id, challan_id, procurement_id]
+      [
+        supply_order_id,
+        purchase_date,
+        purchase_price,
+        vendor_id,
+        invoice_id,
+        challan_id,
+        procurement_id,
+      ]
     );
 
     res.json("Procurement was updated!");
@@ -788,23 +900,43 @@ app.delete("/api/public/Procurement/:procurement_id", async (req, res) => {
 //to add new Procurement
 app.post("/api/public/add-Procurement", async (req, res) => {
   try {
-    const { supply_order_id, purchase_date, purchase_price, vendor_id, invoice_id, challan_id } = req.body;
+    const {
+      supply_order_id,
+      purchase_date,
+      purchase_price,
+      vendor_id,
+      invoice_id,
+      challan_id,
+    } = req.body;
 
     // Validate if the selected vendor_id, invoice_id, and challan_id exist in their respective tables
-    const vendorExists = await pool.query('SELECT * FROM public."Vendor" WHERE id = $1', [vendor_id]);
-    const invoiceExists = await pool.query('SELECT * FROM public."Invoice" WHERE id = $1', [invoice_id]);
-    const challanExists = await pool.query('SELECT * FROM public."Challan" WHERE id = $1', [challan_id]);
+    const vendorExists = await pool.query(
+      'SELECT * FROM public."Vendor" WHERE id = $1',
+      [vendor_id]
+    );
+    const invoiceExists = await pool.query(
+      'SELECT * FROM public."Invoice" WHERE id = $1',
+      [invoice_id]
+    );
+    const challanExists = await pool.query(
+      'SELECT * FROM public."Challan" WHERE id = $1',
+      [challan_id]
+    );
 
     if (vendorExists.rows.length === 0) {
       return res.status(400).json({ error: "Selected vendor does not exist." });
     }
 
     if (invoiceExists.rows.length === 0) {
-      return res.status(400).json({ error: "Selected invoice does not exist." });
+      return res
+        .status(400)
+        .json({ error: "Selected invoice does not exist." });
     }
 
     if (challanExists.rows.length === 0) {
-      return res.status(400).json({ error: "Selected challan does not exist." });
+      return res
+        .status(400)
+        .json({ error: "Selected challan does not exist." });
     }
 
     // If all foreign keys exist, insert the procurement record
@@ -813,16 +945,27 @@ app.post("/api/public/add-Procurement", async (req, res) => {
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `;
-    const values = [supply_order_id, purchase_date, purchase_price, vendor_id, invoice_id, challan_id];
+    const values = [
+      supply_order_id,
+      purchase_date,
+      purchase_price,
+      vendor_id,
+      invoice_id,
+      challan_id,
+    ];
     const newProcurement = await pool.query(insertProcurementQuery, values);
 
     res.status(201).json(newProcurement.rows[0]);
   } catch (error) {
     console.error("Error adding procurement:", error);
-    res.status(500).json({ error: "Failed to add procurement. Please try again later." });
+    res
+      .status(500)
+      .json({ error: "Failed to add procurement. Please try again later." });
   }
 });
-{/*                        Tagging Status Screen        */}
+{
+  /*                        Tagging Status Screen        */
+}
 
 //to get tagging status
 app.get("/api/public/TaggingStatus", async (req, res) => {
@@ -842,9 +985,12 @@ app.get("/api/public/TaggingStatus", async (req, res) => {
 app.post("/api/public/add-TaggingStatus", async (req, res) => {
   try {
     const { status } = req.body;
-    
+
     // Check if the tagging status already exists
-    const existingStatus = await pool.query('SELECT * FROM public."TaggingStatus" WHERE status = $1', [status]);
+    const existingStatus = await pool.query(
+      'SELECT * FROM public."TaggingStatus" WHERE status = $1',
+      [status]
+    );
     if (existingStatus.rows.length > 0) {
       return res.status(409).json({ error: "Tagging status already exists." });
     }
@@ -859,10 +1005,11 @@ app.post("/api/public/add-TaggingStatus", async (req, res) => {
     res.status(201).json(newTaggingStatus.rows[0]);
   } catch (error) {
     console.error("Error adding tagging status:", error);
-    res.status(500).json({ error: "Failed to add tagging status. Please try again later." });
+    res
+      .status(500)
+      .json({ error: "Failed to add tagging status. Please try again later." });
   }
 });
-
 
 //to update tagging status
 app.put("/api/public/TaggingStatus/:id", async (req, res) => {
@@ -884,10 +1031,11 @@ app.put("/api/public/TaggingStatus/:id", async (req, res) => {
   }
 });
 
-
-{/*                        Vendor Screen        */}
+{
+  /*                        Vendor Screen        */
+}
 //to get vendors
-app.get('/api/public/Vendor', async (req, res) => {
+app.get("/api/public/Vendor", async (req, res) => {
   try {
     const fetchVendorsQuery = `
       SELECT * FROM public."Vendor"
@@ -895,14 +1043,13 @@ app.get('/api/public/Vendor', async (req, res) => {
     const vendors = await pool.query(fetchVendorsQuery);
     res.status(200).json(vendors.rows);
   } catch (error) {
-    console.error('Error fetching vendors:', error);
-    res.status(500).json({ error: 'Failed to fetch vendors.' });
+    console.error("Error fetching vendors:", error);
+    res.status(500).json({ error: "Failed to fetch vendors." });
   }
 });
 
-
 //to  add new vendor
-app.post('/api/public/add-Vendor', async (req, res) => {
+app.post("/api/public/add-Vendor", async (req, res) => {
   try {
     const { name, address, city, state, country } = req.body;
     const insertVendorQuery = `
@@ -915,12 +1062,14 @@ app.post('/api/public/add-Vendor', async (req, res) => {
     res.status(201).json(newVendor.rows[0]);
   } catch (error) {
     console.error("Error adding vendor:", error);
-    res.status(500).json({ error: "Failed to add vendor. Please try again later." });
+    res
+      .status(500)
+      .json({ error: "Failed to add vendor. Please try again later." });
   }
 });
 
 //to update vendor
-app.put('/api/public/Vendor/:id', async (req, res) => {
+app.put("/api/public/Vendor/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { name, address, city, state, country } = req.body;
@@ -934,15 +1083,16 @@ app.put('/api/public/Vendor/:id', async (req, res) => {
 
     await pool.query(updateQuery, [name, address, city, state, country, id]);
 
-    res.status(200).json({ message: 'Vendor updated successfully!' });
+    res.status(200).json({ message: "Vendor updated successfully!" });
   } catch (error) {
-    console.error('Error updating vendor:', error);
-    res.status(500).json({ error: 'Failed to update vendor.' });
+    console.error("Error updating vendor:", error);
+    res.status(500).json({ error: "Failed to update vendor." });
   }
 });
 
-
-{/*                         User Screen                            */} 
+{
+  /*                         User Screen                            */
+}
 //to display users
 app.get("/api/public/users", async (req, res) => {
   try {
@@ -954,82 +1104,85 @@ app.get("/api/public/users", async (req, res) => {
   }
 });
 
-//to add user
-// app.post("/api/public/add-user", async (req, res) => {
-//   try {
-//     const { username, password, role } = req.body;
-
-//     // Check if the username already exists in the database
-//     const existingUser = await pool.query(
-//       "SELECT * FROM public.passwords WHERE username = $1",
-//       [username]
-//     );
-
-//     if (existingUser.rows.length > 0) {
-//       return res.status(409).json({ error: "Username already exists" });
-//     }
-
-//     // Generate a salt and hash the password
-//     const saltRounds = 10;
-//     const salt = await bcrypt.genSalt(saltRounds);
-//     const hashedPassword = await bcrypt.hash(password, salt);
-
-//     // Insert the new user data into the database
-//     await pool.query(
-//       "INSERT INTO public.passwords (username, password_hash, role) VALUES ($1, $2, $3)",
-//       [username, hashedPassword, role]
-//     );
-
-//     res.status(201).json({ message: "User added successfully" });
-//   } catch (error) {
-//     console.error("Error adding user:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
-
-//     res.status(201).json({ message: "User added successfully" });
-//   } catch (error) {
-//     console.error("Error adding user:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
-
-
-{/*                         Login Screen                            */} 
-           
-
-//login password
-app.post("/api/public/passwords", async (req, res) => {
+//Login endpoints
+app.post("/api/public/login", async (req, res) => {
+  console.log("Login request received:", req.body);
   const { username, password } = req.body;
 
   try {
     const result = await pool.query(
-      "SELECT password_hash FROM public.passwords WHERE username = $1",
+      'SELECT id, password_hash, role FROM public."passwords" WHERE username = $1',
       [username]
     );
 
     if (result.rows.length === 0) {
       res.status(401).json({ error: "Invalid username or password" });
     } else {
-      const storedHashedPassword = result.rows[0].password_hash;
+      const sotoredHashedPassword = result.rows[0].password_hash;
+      const user = {
+        id: result.rows[0].id,
+        roles: result.rows[0].roles,
+      };
+
       const isPasswordValid = await bcrypt.compare(
         password,
-        storedHashedPassword
+        sotoredHashedPassword
       );
 
       if (isPasswordValid) {
-        res.status(200).json({ message: "User authenticated successfully" });
+        //If authentication is successful, generate a JWT token for the user with a secret key
+        const token = jwt.sign(
+          { userId: user.id, roles: user.roles },
+          jwtSecret,
+          {
+            expiresIn: "2h", //Token expiration time
+          }
+        )
+        console.log("Token generated:", token)
+        
+        ;
+
+        //return the token to the client
+        res.status(200).json({ token });
+        //check the res in the console
+        
+
+
+        
+        
       } else {
         res.status(401).json({ error: "Invalid username or password" });
       }
     }
   } catch (error) {
-    console.error("An error occurred during login:", error);
+    console.error("Error logging in:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
+//Protected route for token verification
+app.get("/api/public/verifyToken", (req, res) => {
+  console.log("Token verification request received:", req.body);
 
+  const token = req.header("Authorization")?.split(" ")[1];
+  console.log(token);
+
+  console.log("Token received:", token);
+
+  if (!token) {
+    return res.status(401).json({ error: "Access denied. Token missing." });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, jwtSecret);
+  
+
+    res.status(200).json({ message: "Token verified succeessfully" });
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    res.status(401).json({ error: "Token verification failed, Invalid token" });
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

@@ -1,14 +1,9 @@
 import React from "react";
 import { Navbar, Nav , Button} from "react-bootstrap"; 
 import Logo from "./logo.ico"
-function NavbarComponent({ username }) {
+function NavbarComponent({ username , handleLogout}) {
 
-  const handleLogout = () => {
-
-    //clearuser session etc needs to be added
-      window.location.href = "/login"
-      
-    };
+ 
 
   return (
     <Navbar bg="medium" expand="lg" className="d-flex justify-content-between align-items-center" style={{ background: "#EAEAEA" }}>
@@ -23,7 +18,7 @@ function NavbarComponent({ username }) {
 
       <Nav>
       <Nav style={{ paddingRight: "10px" }}>
-      <Button variant="danger" onClick={handleLogout}  >Logout</Button>
+      <Button variant="danger" onClick={handleLogout} href="/login"  >Logout</Button>
       </Nav>
       </Nav>
     </Navbar>

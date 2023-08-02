@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { css } from "@emotion/react";
 import { ScaleLoader } from "react-spinners";
 import "./LoginScreen.css";
+const { localStorage } = window;
 
-const override = css`
+const override = css`f
   display: block;
   margin: 0 auto;
   border-color: red;
@@ -22,9 +23,10 @@ const LoginForm = ({ onLogin }) => {
     setUsername(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e) => { 
     setPassword(e.target.value);
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,22 +39,34 @@ const LoginForm = ({ onLogin }) => {
     try {
       setLoading(true);
       setError("");
-
+      console.log("before axios");
       const response = await axios.post(
-        "http://localhost:5000/api/public/passwords",
+        "http://localhost:5000/api/public/login",
         {
           username,
           password,
         }
       );
+      console.log("Response from the server:", response.data); // Log the response body
 
       if (response.status === 200) {
-        
+        // Store the JWT token in the browser's local storage
+        const token = response.data.token;
+        localStorage.setItem("jwt", token);
+        console.log("Stored JWT token:", token);
+
         console.log("User authenticated successfully");
-        onLogin();
+
+        // Update the login status in the parent component
+        onLogin(true);
+
+        // Clear the form after successful login
+        setUsername("");
+        setPassword("");
+
+        // Navigate to the "/asset-entry" route after login
         navigate("/asset-entry");
       } else {
-        
         setError("Invalid username or password");
       }
     } catch (error) {
@@ -62,6 +76,7 @@ const LoginForm = ({ onLogin }) => {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="container">
