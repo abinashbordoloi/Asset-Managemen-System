@@ -28,7 +28,7 @@ const Sidebar = () => {
         <span className="sidebar-title">Dashboard</span>
       </div>
       <div className="sidebar-links">
-        <Link to="/" className="sidebar-link" onClick={toggleSidebar}>         
+        <Link to="/asset-entry" className="sidebar-link" onClick={toggleSidebar}>         
           Asset
         </Link>
 

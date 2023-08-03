@@ -39,6 +39,9 @@ import ProcurementForm from "./components/Screens/ProcurementForm";
 import PhysicalStatusForm from "./components/Screens/PhysicalStatusForm";
 import SupplyOrderForm from "./components/Screens/SupplyOrderForm";
 import UserForm from "./components/Screens/UserForm";
+import HomePage from "./components/Screens/HomePage";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 function App() {
@@ -105,7 +108,8 @@ function App() {
             path="/"
             element={
               isLoggedIn ? (
-                <Navigate to="/asset-entry" />
+                <Navigate to="/HomePage" />
+
               ) : (
                 <Navigate to="/login" />
               )
@@ -117,7 +121,7 @@ function App() {
             path="/login"
             element={
               isLoggedIn ? (
-                <Navigate to="/asset-entry" />
+                <Navigate to="/HomePage" />
               ) : (
                 <LoginForm onLogin={handleLogin} />
               )
@@ -125,6 +129,12 @@ function App() {
           />
           
           {/*If isLoggedIn is true, show the AssetEntryScreen */}
+          {
+            isLoggedIn && (
+              <Route path="/HomePage" element={<HomePage />} />
+            )
+          }
+          
           {isLoggedIn && (
             <Route path="/asset-entry" element={<AssetEntryScreen />} />
           )}

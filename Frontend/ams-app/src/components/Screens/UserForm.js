@@ -1,117 +1,138 @@
-// import React, { useState } from "react";
-// import axios from "axios";
-// import { Form, Button } from "react-bootstrap";
-// import { hashPassword } from "./hashPassword";
-
-
-
-// const UserForm = () => {
-
-    
-//   const [userData, setUserData] = useState({
-//     username: "",
-//     password: "",
-//     confirmPassword: "",
-//     role: "",
-//   });
-
-//   const addUser = async () => {
-//     try {
-//       // Check if passwords match
-//       if (userData.password !== userData.confirmPassword) {
-//         alert("Passwords do not match. Please try again.");
-//         return;
-//       }
-
-//       // Hash the password before saving it
-//       const hashedPassword = await hashPassword(userData.password);
-
-//       // Create the user data object to send to the server
-//       const userDataToSend = {
-//         username: userData.username,
-//         password: hashedPassword,
-//         role: userData.role,
-//       };
-
-//       // Send the user data to the server
-//       await axios.post("http://localhost:5000/api/public/add-user", userDataToSend);
-//       console.log("User added successfully!");
-//       alert("User added successfully!");
-//       setUserData({
-//         username: "",
-//         password: "",
-//         confirmPassword: "",
-//         role: "",
-//       });
-//     } catch (error) {
-//       console.error("Error adding user:", error);
-//       alert("Failed to add user. Please try again later.");
-//     }
-//   };
-
-//   const handleInputChange = (e) => {
-//     setUserData({ ...userData, [e.target.name]: e.target.value });
-//   };
-
-//   return (
-//     <div style={{ padding: "20px" }}>
-//       <h2>Add New User</h2>
-
-//       <Form.Group style={{ marginBottom: "10px" }}>
-//         <Form.Control
-//           type="text"
-//           placeholder="Username"
-//           name="username"
-//           value={userData.username}
-//           onChange={handleInputChange}
-//           required
-//         />
-//       </Form.Group>
-//       <Form.Group style={{ marginBottom: "10px" }}>
-//         <Form.Control
-//           type="password"
-//           placeholder="Password"
-//           name="password"
-//           value={userData.password}
-//           onChange={handleInputChange}
-//           required
-//         />
-//       </Form.Group>
-//       <Form.Group style={{ marginBottom: "10px" }}>
-//         <Form.Control
-//           type="password"
-//           placeholder="Confirm Password"
-//           name="confirmPassword"
-//           value={userData.confirmPassword}
-//           onChange={handleInputChange}
-//           required
-//         />
-//       </Form.Group>
-//       <Form.Group style={{ marginBottom: "10px" }}>
-//         <Form.Control
-//           type="text"
-//           placeholder="Role"
-//           name="role"
-//           value={userData.role}
-//           onChange={handleInputChange}
-//           required
-//         />
-//       </Form.Group>
-
-//       <Button variant="primary" onClick={addUser}>
-//         Add User
-//       </Button>
-//     </div>
-//   );
-// };
-
-// export default UserForm;
-import React from 'react'
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Form, Button, InputGroup } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const UserForm = () => {
-  return (
-    <div>UserForm</div>
-  )
-}
+  const [userData, setUserData] = useState({
+    username: '',
+    password: '',
+    confirmPassword: '',
+    role: '',
+  });
 
-export default UserForm
+  const [showPassword, setShowPassword] = useState(false);
+
+  const addUser = async () => {
+    try {
+      // Check if passwords match
+      if (userData.password !== userData.confirmPassword) {
+        alert('Passwords do not match. Please try again.');
+        return;
+      }
+
+      // Send the user data to the server for registration
+      const response = await axios.post('http://localhost:5000/api/public/register', {
+        username: userData.username,
+        password: userData.password,
+        role: userData.role,
+      });
+
+      if (response.status === 201) {
+        console.log('User added successfully!');
+        alert('User added successfully!');
+        
+        setUserData({
+          username: '',
+          password: '',
+          confirmPassword: '',
+          role: '',
+        });
+      } else if (response.status === 409) {
+        alert('Username already exists. Please choose a different username.');
+      } else {
+        alert('Failed to add user. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error adding user:', error);
+      alert('Failed to add user. Please try again later.');
+    }
+  };
+  
+  const handleInputChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+    setTimeout(() => {
+      setShowPassword(false);
+    }, 20000); // 20 seconds
+  };
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h2>Add New User</h2>
+
+      <Form.Group style={{ marginBottom: '10px' }}>
+        <Form.Control
+          type="text"
+          placeholder="Username"
+          name="username"
+          value={userData.username}
+          onChange={handleInputChange}
+          required
+        />
+      </Form.Group>
+
+      <Form.Group style={{ marginBottom: '10px' }}>
+        <Form.Control
+          as="select" // Use "as" prop to specify the element type
+          name="role"
+          value={userData.role}
+          onChange={handleInputChange}
+          required
+        >
+          <option value="" disabled>Select Role</option>
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+        </Form.Control>
+      </Form.Group>
+
+      <Form.Group style={{ marginBottom: '10px' }}>
+        <InputGroup>
+          <Form.Control
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Password"
+            name="password"
+            value={userData.password}
+            onChange={handleInputChange}
+            required
+          />
+          <InputGroup.Text>
+            <Button variant="link" onClick={togglePasswordVisibility}>
+              <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+            </Button>
+          </InputGroup.Text>
+        </InputGroup>
+      </Form.Group>
+
+      <Form.Group style={{ marginBottom: '10px' }}>
+        <InputGroup>
+          <Form.Control
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Confirm Password"
+            name="confirmPassword"
+            value={userData.confirmPassword}
+            onChange={handleInputChange}
+            required
+          />
+          <InputGroup.Text>
+            <Button variant="link" onClick={togglePasswordVisibility}>
+              <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+            </Button>
+          </InputGroup.Text>
+        </InputGroup>
+      </Form.Group>
+
+      <Button variant="primary" onClick={addUser}>
+        Add User
+      </Button>
+    </div>
+  );
+};
+
+export default UserForm;
+
+
