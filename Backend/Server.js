@@ -38,6 +38,11 @@ app.get("/api/public/Asset", async (req, res) => {
   }
 });
 
+
+//route for home page enpoints
+
+
+
 // To edit an asset
 app.put("/api/public/Asset/:id", async (req, res) => {
   try {
@@ -1104,6 +1109,44 @@ app.get("/api/public/users", async (req, res) => {
   }
 });
 
+
+//register endpoints
+app.post("/api/public/register", async (req, res) => {
+  console.log("Register request received:", req.body);
+  const { username, password, role } = req.body;
+
+  try {
+    //Check if the user already exists
+    const result = await pool.query(
+      'SELECT * FROM public."passwords" WHERE username = $1',
+      [username]
+    );
+
+    if (result.rows.length > 0) {
+      res.status(409).json({ error: "User already exists" });
+      alert("User already exists");
+    } else {
+      //If the user does not exist, hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+      
+      //Insert the user into the database
+      const insertUserQuery = 'INSERT INTO public.passwords (username, password_hash, role) VALUES ($1, $2, $3)';
+      const values = [username, hashedPassword, role];
+      await pool.query(insertUserQuery, values);
+
+      res.status(201).json({ message: "User created successfully" });
+    }
+  } catch (error) {
+    console.error("Error registering user:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+
+
+
+
 //Login endpoints
 app.post("/api/public/login", async (req, res) => {
   console.log("Login request received:", req.body);
@@ -1145,10 +1188,7 @@ app.post("/api/public/login", async (req, res) => {
         //return the token to the client
         res.status(200).json({ token });
         //check the res in the console
-        
-
-
-        
+      
         
       } else {
         res.status(401).json({ error: "Invalid username or password" });
@@ -1159,6 +1199,9 @@ app.post("/api/public/login", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
+
 
 //Protected route for token verification
 app.get("/api/public/verifyToken", (req, res) => {
