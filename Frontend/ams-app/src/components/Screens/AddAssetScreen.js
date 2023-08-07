@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Form, Button } from "react-bootstrap";
+import backgroundImage from "./tablebg.jpg";
 
 const AddAssetScreen = () => {
   const [assetData, setAssetData] = useState({
@@ -56,9 +57,22 @@ const AddAssetScreen = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="bg-image h-100" 
+    style={{ backgroundImage: `url(${backgroundImage})`, 
+    backgroundSize: 'cover', 
+    backgroundPosition: 'center', 
+    height: "500px", overflowY: "auto",
+  }}>
+  
+  
+     <div className="mask d-flex align-items-center">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="card shadow-2-strong" style={{ backgroundColor: "#d9d9d9" }}>
+                  <div className="card-body">
       <h2>Add New Asset</h2>
-
+      <div className="form-responsive" style={{  width: "1500px", margin: "auto" }} >
       <Form.Group style={{ marginBottom: "10px" }}>
         <Form.Control
           type="text"
@@ -140,15 +154,24 @@ const AddAssetScreen = () => {
         />
       </Form.Group>
       <Form.Group style={{ marginBottom: "10px" }}>
-        <Form.Control
-          type="text"
-          placeholder="Tagging Status"
-          name="tagging_status"
-          value={assetData.tagging_status}
-          onChange={handleInputChange}
-          required
-        />
-      </Form.Group>
+  <Form.Control
+    as="select" // Use select to render a dropdown
+    name="tagging_status"
+    value={assetData.tagging_status}
+    onChange={handleInputChange}
+    required
+  >
+    <option value="">Select Tagging Status</option>
+    <option value="Not Tagged">Not Tagged</option>
+    <option value="In Progress">In Progress</option>
+    <option value="Untagged">Untagged</option>
+    <option value="Partially Tagged">Partially Tagged</option>
+    <option value="Pending Verification">Pending Verification</option>
+    <option value="Expired">Expired</option>
+    <option value="Tagged">Tagged</option>
+  </Form.Control>
+</Form.Group>
+
       <Form.Group style={{ marginBottom: "10px" }}>
         <Form.Control
           type="text"
@@ -180,15 +203,18 @@ const AddAssetScreen = () => {
         />
       </Form.Group>
       <Form.Group style={{ marginBottom: "10px" }}>
-        <Form.Control
-          type="text"
-          placeholder="Physical Status"
-          name="physicalStatus"
-          value={assetData.physicalStatus}
-          onChange={handleInputChange}
-          required
-        />
-      </Form.Group>
+  <Form.Control
+    as="select" // Use select to render a dropdown
+    name="physicalStatus"
+    value={assetData.physicalStatus}
+    onChange={handleInputChange}
+    required
+  >
+    <option value="">Select Physical Status</option>
+    <option value="Serviceable">Serviceable</option>
+    <option value="Non-Serviceable">Non-Serviceable</option>
+  </Form.Control>
+</Form.Group>
       <Form.Group style={{ marginBottom: "10px" }}>
         <Form.Control
           type="text"
@@ -224,6 +250,13 @@ const AddAssetScreen = () => {
         Add Asset
       </Button>
     </div>
+    </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+       </div>
   );
 };
 

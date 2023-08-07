@@ -1,12 +1,10 @@
 //@ts-nocheck
-
 const { Pool } = require("pg");
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-
 dotenv.config();
 const jwtSecret = process.env.JWT_SECRET;
 console.log("JWT secret:", jwtSecret);
@@ -14,8 +12,8 @@ console.log("JWT secret:", jwtSecret);
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
-  database: "Neepco",
-  password: "abinash",
+  database: "NEEPCO",
+  password: "Iamsroita18@",
   port: 5432,
 });
 
@@ -40,6 +38,7 @@ app.get("/api/public/Asset", async (req, res) => {
 
 
 //route for home page enpoints
+
 
 
 
@@ -127,14 +126,14 @@ app.post("/api/public/add-Asset", async (req, res) => {
       installation,
       insurance,
       warranty,
-      tagging_status,
       remarks,
       supplyOrder,
       challan,
-      physicalStatus,
       asset_id,
       waranty_start_date,
       warranty_end_date,
+      tagging_status,
+      physicalStatus,
     } = req.body;
 
     // Validate if the selected foreign keys exist in their respective tables
@@ -142,17 +141,13 @@ app.post("/api/public/add-Asset", async (req, res) => {
       'SELECT * FROM public."Description" WHERE id = $1',
       [description]
     );
-    const locationExists = await pool.query(
-      'SELECT * FROM public."Location" WHERE id = $1',
-      [location]
-    );
     const categoryExists = await pool.query(
       'SELECT * FROM public."Category" WHERE id = $1',
       [category]
     );
-    const procurementExists = await pool.query(
-      'SELECT * FROM public."Procurement" WHERE id = $1',
-      [procurement]
+    const challanExists = await pool.query(
+      'SELECT * FROM public."Challan" WHERE id = $1',
+      [challan]
     );
     const installationExists = await pool.query(
       'SELECT * FROM public."Installation" WHERE id = $1',
@@ -162,93 +157,46 @@ app.post("/api/public/add-Asset", async (req, res) => {
       'SELECT * FROM public."Insurance" WHERE id = $1',
       [insurance]
     );
-    const taggingStatusExists = await pool.query(
-      'SELECT * FROM public."TaggingStatus" WHERE id = $1',
-      [tagging_status]
+    const locationExists = await pool.query(
+      'SELECT * FROM public."Location" WHERE id = $1',
+      [location]
     );
     const supplyOrderExists = await pool.query(
       'SELECT * FROM public."SupplyOrder" WHERE id = $1',
       [supplyOrder]
     );
-    const challanExists = await pool.query(
-      'SELECT * FROM public."Challan" WHERE id = $1',
-      [challan]
-    );
 
     if (descriptionExists.rows.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Selected description does not exist." });
-    }
-
-    if (locationExists.rows.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Selected location does not exist." });
+      return res.status(400).json({ error: "Selected description does not exist." });
     }
 
     if (categoryExists.rows.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Selected category does not exist." });
-    }
-
-    if (procurementExists.rows.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Selected procurement does not exist." });
-    }
-
-    if (installationExists.rows.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Selected installation does not exist." });
-    }
-
-    if (insuranceExists.rows.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Selected insurance does not exist." });
-    }
-
-    if (taggingStatusExists.rows.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Selected tagging status does not exist." });
-    }
-
-    if (supplyOrderExists.rows.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Selected supply order does not exist." });
+      return res.status(400).json({ error: "Selected category does not exist." });
     }
 
     if (challanExists.rows.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Selected challan does not exist." });
+      return res.status(400).json({ error: "Selected challan does not exist." });
+    }
+
+    if (installationExists.rows.length === 0) {
+      return res.status(400).json({ error: "Selected installation does not exist." });
+    }
+
+    if (insuranceExists.rows.length === 0) {
+      return res.status(400).json({ error: "Selected insurance does not exist." });
+    }
+
+    if (locationExists.rows.length === 0) {
+      return res.status(400).json({ error: "Selected location does not exist." });
+    }
+
+    if (supplyOrderExists.rows.length === 0) {
+      return res.status(400).json({ error: "Selected supplyOrder does not exist." });
     }
 
     // If all foreign keys exist, insert the asset record
     const insertAssetQuery = `
-      INSERT INTO public."Asset" (
-        description,
-        serial_no,
-        location,
-        category,
-        procurement,
-        installation,
-        insurance,
-        warranty,
-        tagging_status,
-        remarks,
-        "supplyOrder",
-        challan,
-        "physicalStatus",
-        asset_id,
-        waranty_start_date,
-        warranty_end_date
-      )
+      INSERT INTO public."Asset" (description, serial_no, location, category, procurement, installation, insurance, warranty, remarks, "supplyOrder", challan, asset_id, waranty_start_date, warranty_end_date, tagging_status, "physicalStatus")
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
       RETURNING *
     `;
@@ -261,25 +209,24 @@ app.post("/api/public/add-Asset", async (req, res) => {
       installation,
       insurance,
       warranty,
-      tagging_status,
       remarks,
       supplyOrder,
       challan,
-      physicalStatus,
       asset_id,
       waranty_start_date,
       warranty_end_date,
+      tagging_status,
+      physicalStatus,
     ];
     const newAsset = await pool.query(insertAssetQuery, values);
 
     res.status(201).json(newAsset.rows[0]);
   } catch (error) {
     console.error("Error adding asset:", error);
-    res
-      .status(500)
-      .json({ error: "Failed to add asset. Please try again later." });
+    res.status(500).json({ error: "Failed to add asset. Please try again later." });
   }
 });
+
 
 {
   /*                          Supply Order Screen                                     */
@@ -777,69 +724,7 @@ app.put("/api/public/Invoice/:id", async (req, res) => {
   }
 });
 
-{
-  /*                         Physical Status Screen                            */
-}
-//to get physical Status
-app.get("/api/public/PhysicalStatus", async (req, res) => {
-  try {
-    const fetchPhysicalStatusQuery = `
-      SELECT * FROM public."PhysicalStatus"
-    `;
-    const physicalStatuses = await pool.query(fetchPhysicalStatusQuery);
-    res.status(200).json(physicalStatuses.rows);
-  } catch (error) {
-    console.error("Error fetching physical statuses:", error);
-    res.status(500).json({ error: "Failed to fetch physical statuses." });
-  }
-});
 
-//to add physical status
-app.post("/api/public/add-PhysicalStatus", async (req, res) => {
-  try {
-    const { status } = req.body;
-    const insertPhysicalStatusQuery = `
-      INSERT INTO public."PhysicalStatus" (status)
-      VALUES ($1)
-
-      RETURNING *
-    `;
-    const values = [status];
-    const newPhysicalStatus = await pool.query(
-      insertPhysicalStatusQuery,
-      values
-    );
-    res.status(201).json(newPhysicalStatus.rows[0]);
-  } catch (error) {
-    console.error("Error adding physical status:", error);
-    res
-      .status(500)
-      .json({
-        error: "Failed to add physical status. Please try again later.",
-      });
-  }
-});
-
-//to update physical status
-
-app.put("/api/public/PhysicalStatus/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
-    const updateQuery = `
-      UPDATE public."PhysicalStatus"
-      SET status = $1
-      WHERE id = $2
-    `;
-
-    await pool.query(updateQuery, [status, id]);
-
-    res.status(200).json({ message: "Physical status updated successfully!" });
-  } catch (error) {
-    console.error("Error updating physical status:", error);
-    res.status(500).json({ error: "Failed to update physical status." });
-  }
-});
 {
   /*                        Procurement Screen */
 }
@@ -966,73 +851,6 @@ app.post("/api/public/add-Procurement", async (req, res) => {
     res
       .status(500)
       .json({ error: "Failed to add procurement. Please try again later." });
-  }
-});
-{
-  /*                        Tagging Status Screen        */
-}
-
-//to get tagging status
-app.get("/api/public/TaggingStatus", async (req, res) => {
-  try {
-    const fetchTaggingStatusesQuery = `
-      SELECT * FROM public."TaggingStatus"
-    `;
-    const taggingStatuses = await pool.query(fetchTaggingStatusesQuery);
-    res.status(200).json(taggingStatuses.rows);
-  } catch (error) {
-    console.error("Error fetching tagging statuses:", error);
-    res.status(500).json({ error: "Failed to fetch tagging statuses." });
-  }
-});
-
-//to add new tagging status(not working)
-app.post("/api/public/add-TaggingStatus", async (req, res) => {
-  try {
-    const { status } = req.body;
-
-    // Check if the tagging status already exists
-    const existingStatus = await pool.query(
-      'SELECT * FROM public."TaggingStatus" WHERE status = $1',
-      [status]
-    );
-    if (existingStatus.rows.length > 0) {
-      return res.status(409).json({ error: "Tagging status already exists." });
-    }
-
-    const insertTaggingStatusQuery = `
-      INSERT INTO public."TaggingStatus" (status)
-      VALUES ($1)
-      RETURNING *
-    `;
-    const values = [status];
-    const newTaggingStatus = await pool.query(insertTaggingStatusQuery, values);
-    res.status(201).json(newTaggingStatus.rows[0]);
-  } catch (error) {
-    console.error("Error adding tagging status:", error);
-    res
-      .status(500)
-      .json({ error: "Failed to add tagging status. Please try again later." });
-  }
-});
-
-//to update tagging status
-app.put("/api/public/TaggingStatus/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
-    const updateQuery = `
-      UPDATE public."TaggingStatus"
-      SET status = $1
-      WHERE id = $2
-    `;
-
-    await pool.query(updateQuery, [status, id]);
-
-    res.status(200).json({ message: "Tagging status updated successfully!" });
-  } catch (error) {
-    console.error("Error updating tagging status:", error);
-    res.status(500).json({ error: "Failed to update tagging status." });
   }
 });
 

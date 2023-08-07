@@ -3,6 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Table, Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import backgroundImage from "./tablebg.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const LocationScreen = () => {
   const navigate = useNavigate();
@@ -66,12 +69,24 @@ const LocationScreen = () => {
   };
 
   return (
-    <div>
+    <div className="bg-image h-100" 
+  style={{ backgroundImage: `url(${backgroundImage})`, 
+  backgroundSize: 'cover', 
+  backgroundPosition: 'center', 
+  height: "500px", overflowY: "auto",
+}}>
+      <div className="mask d-flex align-items-center">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12">
+              <div className="card shadow-2-strong" style={{ backgroundColor: "#f5f7fa" }}>
+                <div className="card-body">
       <h2>Locations</h2>
-      <Button variant="primary" onClick={handleAddLocationClick} style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddLocationClick} className="mt-4 w-100" style={{ marginBottom: "10px" }}>
         Add New Location
       </Button>
-      <Table striped bordered hover>
+      <div className="table-responsive" style={{  width: "1000px", margin: "auto" }} >
+       <Table striped bordered hover className="mb-0">
         <thead>
           <tr>
             <th>ID</th>
@@ -151,15 +166,15 @@ const LocationScreen = () => {
                 {editingLocationId === location.id ? (
                   <>
                     <Button variant="success" onClick={handleSaveChanges}>
-                      Save
+                      <FontAwesomeIcon icon={faEdit} /> 
                     </Button>{" "}
                     <Button variant="secondary" onClick={handleCancelEdit}>
-                      Cancel
+                     <FontAwesomeIcon icon={faTimes} /> 
                     </Button>
                   </>
                 ) : (
                   <Button variant="primary" onClick={() => handleEditLocation(location)}>
-                    Edit
+                     <FontAwesomeIcon icon={faEdit} /> 
                   </Button>
                 )}
               </td>
@@ -167,6 +182,13 @@ const LocationScreen = () => {
           ))}
         </tbody>
       </Table>
+    </div>
+     </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
     </div>
   );
 };

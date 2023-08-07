@@ -3,6 +3,10 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash,faTimes } from "@fortawesome/free-solid-svg-icons";
+import backgroundImage from "./tablebg.jpg";
+
 
 const ProcurementScreen = () => {
   const navigate = useNavigate();
@@ -96,13 +100,24 @@ const ProcurementScreen = () => {
   };
 
   return (
-    <div>
+    <div className="bg-image h-100" 
+  style={{ backgroundImage: `url(${backgroundImage})`, 
+  backgroundSize: 'cover', 
+  backgroundPosition: 'center', 
+  height: "500px", overflowY: "auto",
+}}>
+      <div className="mask d-flex align-items-center">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12">
+              <div className="card shadow-2-strong" style={{ backgroundColor: "#f5f7fa" }}>
+                <div className="card-body">
       <h1>Procurements</h1>
-      <Button variant="primary" onClick={handleAddProcurementClick} style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddProcurementClick} className="mt-4 w-100"  style={{ marginBottom: "10px" }}>
         Add Procurement
       </Button>
-
-      <Table striped bordered hover>
+      <div className="table-responsive" style={{  width: "1000px", margin: "auto" }} >
+       <Table striped bordered hover className="mb-0">
         <thead>
           <tr>
             <th>Procurement ID</th>
@@ -231,30 +246,37 @@ const ProcurementScreen = () => {
                 )}
               </td>
               <td>
-                {editingProcurement && editingProcurement.procurement_id === procurement.procurement_id ? (
-                  <>
-                    <Button variant="success" onClick={updateProcurement}>
-                      Save
-                    </Button>{" "}
-                    <Button variant="secondary" onClick={cancelEditing}>
-                      Cancel
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button variant="primary" onClick={() => startEditing(procurement)}>
-                      Edit
-                    </Button>{" "}
-                    <Button variant="danger" onClick={() => deleteProcurement(procurement.procurement_id)}>
-                      Delete
-                    </Button>
-                  </>
-                )}
-              </td>
+  {editingProcurement && editingProcurement.procurement_id === procurement.procurement_id ? (
+    <>
+      <Button variant="success" onClick={updateProcurement}>
+        <FontAwesomeIcon icon={faEdit} /> 
+      </Button>{" "}
+      <Button variant="secondary" onClick={cancelEditing}>
+        <FontAwesomeIcon icon={faTimes} /> 
+      </Button>
+    </>
+  ) : (
+    <>
+      <Button variant="primary" onClick={() => startEditing(procurement)}>
+        <FontAwesomeIcon icon={faEdit} /> 
+      </Button>{" "}
+      <Button variant="danger" onClick={() => deleteProcurement(procurement.procurement_id)}>
+        <FontAwesomeIcon icon={faTrash} /> 
+      </Button>
+    </>
+  )}
+</td>
             </tr>
           ))}
         </tbody>
       </Table>
+    </div>
+    </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
     </div>
   );
 };

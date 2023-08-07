@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Form, Button } from "react-bootstrap";
+import backgroundImage from "./tablebg.jpg";
 
 const ProcurementForm = () => {
   const [procurementData, setProcurementData] = useState({
@@ -36,9 +37,20 @@ const ProcurementForm = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="bg-image h-100" 
+    style={{ backgroundImage: `url(${backgroundImage})`, 
+    backgroundSize: 'cover', 
+    backgroundPosition: 'center', 
+    height: "500px", overflowY: "auto",
+  }}>
+      <div className="mask d-flex align-items-center">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <div className="card shadow-2-strong" style={{ backgroundColor: "#d9d9d" }}>
+                  <div className="card-body">
       <h2>Add New Procurement</h2>
-
+      <div className="form-responsive" style={{  width: "1000px", margin: "auto" }} >
       <Form.Group style={{ marginBottom: "10px" }}>
         <Form.Control
           type="text"
@@ -103,7 +115,14 @@ const ProcurementForm = () => {
       <Button variant="primary" onClick={addProcurement}>
         Add Procurement
       </Button>
+      </div>
     </div>
+    </div>
+               </div>
+             </div>
+           </div>
+           </div>
+           </div>
   );
 };
 

@@ -3,6 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Table, Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import backgroundImage from "./tablebg.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit,faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const SupplyOrderScreen = () => {
   const navigate = useNavigate();
@@ -60,12 +63,19 @@ const SupplyOrderScreen = () => {
   };
 
   return (
-    <div>
+    <div className="bg-image h-100" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
+      <div className="mask d-flex align-items-center">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12">
+              <div className="card shadow-2-strong" style={{ backgroundColor: "#f5f7fa" }}>
+                <div className="card-body">
       <h2>Supply Orders</h2>
-      <Button variant="primary" onClick={handleAddSupplyOrderClick} style={{ marginBottom: "10px" }}>
+      <Button variant="primary" onClick={handleAddSupplyOrderClick} className="mt-4 w-100" style={{ marginBottom: "10px" }}>
         Add New Supply Order
       </Button>
-      <Table striped bordered hover>
+      <div className="table-responsive" style={{  width: "900px", margin: "auto" }} >
+       <Table striped bordered hover className="mb-0">
         <thead>
           <tr>
             <th>ID</th>
@@ -119,15 +129,15 @@ const SupplyOrderScreen = () => {
                 {editingOrderId === order.id ? (
                   <>
                     <Button variant="success" onClick={handleSaveChanges}>
-                      Save
+                    <FontAwesomeIcon icon={faEdit} /> 
                     </Button>{" "}
                     <Button variant="secondary" onClick={handleCancelEdit}>
-                      Cancel
+                    <FontAwesomeIcon icon={faTimes} />
                     </Button>
                   </>
                 ) : (
                   <Button variant="primary" onClick={() => handleEditOrder(order)}>
-                    Edit
+                   <FontAwesomeIcon icon={faEdit} /> 
                   </Button>
                 )}
               </td>
@@ -135,6 +145,14 @@ const SupplyOrderScreen = () => {
           ))}
         </tbody>
       </Table>
+      </div>
+                 
+                </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import backgroundImage from './tablebg.jpg';
 
 const UserForm = () => {
   const [userData, setUserData] = useState({
@@ -62,9 +63,20 @@ const UserForm = () => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className="bg-image h-100" 
+  style={{ backgroundImage: `url(${backgroundImage})`, 
+  backgroundSize: 'cover', 
+  backgroundPosition: 'center', 
+  height: "500px", overflowY: "auto",
+}}>
+    <div className="mask d-flex align-items-center">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12">
+              <div className="card shadow-2-strong" style={{ backgroundColor: "#d9d9d" }}>
+                <div className="card-body">
       <h2>Add New User</h2>
-
+      <div className="form-responsive" style={{  width: "1000px", margin: "auto" }} >
       <Form.Group style={{ marginBottom: '10px' }}>
         <Form.Control
           type="text"
@@ -130,6 +142,13 @@ const UserForm = () => {
         Add User
       </Button>
     </div>
+    </div>
+    </div>
+               </div>
+             </div>
+           </div>
+           </div>
+           </div>
   );
 };
 

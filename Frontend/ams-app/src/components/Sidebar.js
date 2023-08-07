@@ -67,18 +67,9 @@ const Sidebar = () => {
         <Link to="/invoice" className="sidebar-link" onClick={toggleSidebar}>
           Invoice
         </Link>
-
-        <Link to="/physicalstatus" className="sidebar-link" onClick={toggleSidebar}>
-          Physical Status
-        </Link>
      
         <Link to="/procurement" className="sidebar-link" onClick={toggleSidebar}>
           Procurement
-        </Link>
-
-
-        <Link to="/taggingstatus" className="sidebar-link" onClick={toggleSidebar}>
-          TaggingStatus
         </Link>
 
         <Link to="/vendor" className="sidebar-link" onClick={toggleSidebar}>

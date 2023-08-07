@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Form, Button } from "react-bootstrap";
+import backgroundImage from "./tablebg.jpg";
 
 const DescriptionForm = () => {
   const [descriptionData, setDescriptionData] = useState({
@@ -30,9 +31,22 @@ const DescriptionForm = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Add New Description</h2>
+    <div className="bg-image h-100" 
+  style={{ backgroundImage: `url(${backgroundImage})`, 
+  backgroundSize: 'cover', 
+  backgroundPosition: 'center', 
+  height: "500px", overflowY: "auto",
+}}>
 
+
+   <div className="mask d-flex align-items-center">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12">
+              <div className="card shadow-2-strong" style={{ backgroundColor: "#f5f7fa" }}>
+                <div className="card-body">
+      <h2>Add New Description</h2>
+      <div className="form-responsive" style={{  width: "1000px", margin: "auto" }} >
       <Form.Group style={{ marginBottom: "10px" }}>
         <Form.Control
           type="text"
@@ -40,6 +54,7 @@ const DescriptionForm = () => {
           name="make"
           value={descriptionData.make}
           onChange={handleInputChange}
+          padding="10px"
           required
         />
       </Form.Group>
@@ -64,10 +79,18 @@ const DescriptionForm = () => {
         />
       </Form.Group>
 
-      <Button variant="primary" onClick={addDescription}>
+      <Button variant="primary" onClick={addDescription} > 
         Add Description
       </Button>
     </div>
+    </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+       </div>
+    
   );
 };
 

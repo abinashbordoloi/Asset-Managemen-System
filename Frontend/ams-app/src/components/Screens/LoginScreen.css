@@ -5,9 +5,10 @@
     align-items: center;
     height: 100vh;
   }
+
   
   #main-outer-div {
-    background-color: #eee8e5;
+    background-color: #f1d6c8;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
