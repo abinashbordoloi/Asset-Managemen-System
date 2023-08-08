@@ -23,7 +23,7 @@ const AssetEntryScreen = () => {
     procurement: "",
     installation: "",
     insurance: "",
-    warranty: "",
+    // warranty: "",
     tagging_status: "",
     remarks: "",
     supplyOrder: "",
@@ -64,7 +64,7 @@ const AssetEntryScreen = () => {
       procurement: "",
       installation: "",
       insurance: "",
-      warranty: "",
+      // warranty: "",
       tagging_status: "",
       remarks: "",
       supplyOrder: "",
@@ -93,7 +93,7 @@ const AssetEntryScreen = () => {
         procurement: "",
         installation: "",
         insurance: "",
-        warranty: "",
+        // warranty: "",
         tagging_status: "",
         remarks: "",
         supplyOrder: "",
@@ -156,7 +156,7 @@ const AssetEntryScreen = () => {
             <th>Procurement</th>
             <th>Installation</th>
             <th>Insurance</th>
-            <th>Warranty</th>
+            {/* <th>Warranty</th> */}
             <th>Tagging Status</th>
             <th>Remarks</th>
             <th>Supply Order</th>
@@ -259,7 +259,7 @@ const AssetEntryScreen = () => {
                   asset.insurance
                 )}
               </td>
-              <td>
+              {/* <td>
                 {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control
                     type="text"
@@ -269,7 +269,7 @@ const AssetEntryScreen = () => {
                 ) : (
                   asset.warranty
                 )}
-              </td>
+              </td> */}
               <td>
                 {editingAsset && editingAsset.id === asset.id ? (
                   <Form.Control

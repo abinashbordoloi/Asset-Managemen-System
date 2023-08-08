@@ -7,19 +7,28 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 const jwtSecret = process.env.JWT_SECRET;
-console.log("JWT secret:", jwtSecret);
+const PASSWORD= process.env.PASSWORD;
+const HOST = process.env.HOST;
+const PORT = process.env.PORT;
+const DATABASE = process.env.DATABASE;
+
+console.log(PASSWORD,HOST,PORT,DATABASE );
+
 
 const pool = new Pool({
   user: "postgres",
-  host: "localhost",
-  database: "NEEPCO",
-  password: "Iamsroita18@",
-  port: 5432,
+  host: HOST,
+  database: DATABASE,
+  password: PASSWORD,
+  port: 5432
 });
+
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+
 
 {
   /*                          Asset Screen                                     */
@@ -48,13 +57,12 @@ app.get('/api/public/assets', async (req, res) => {
     a.serial_no,
     l.address AS location,
     c.name AS category,
-    a.procurement,
+    a.procurement ,
     i.installation_date AS installation_date,
     i.commissioning_date AS commissioning_date,
     "in".insurance_company AS insurance_company,
-    a.warranty,
     a.remarks,
-    so.price AS supplyOrder_price,
+    so.price AS suppyOrder_price,
     ch.challan_details AS challan_details,
     a.asset_id,
     a.waranty_start_date,
@@ -79,6 +87,8 @@ LEFT JOIN
     public."Challan" ch ON a.challan = ch.id
 LEFT JOIN
     public."Procurement" p ON a.procurement = p.procurement_id;
+LEFT JOIN 
+    public."Procurement" p on p.supply_order_id = so.id;
 
     `;
     
@@ -92,7 +102,6 @@ LEFT JOIN
 
 
 // to view procurement table
-
 app.get('/api/public/procurements', async (req, res) => {
   try {
     const query = `
@@ -119,7 +128,6 @@ app.get('/api/public/procurements', async (req, res) => {
 });
 
 
-
 // To edit an asset
 app.put("/api/public/Asset/:id", async (req, res) => {
   try {
@@ -142,6 +150,7 @@ app.put("/api/public/Asset/:id", async (req, res) => {
       waranty_start_date,
       warranty_end_date,
     } = req.body;
+
     const updateAsset = await pool.query(
       `UPDATE public."Asset"
        SET description = $1, serial_no = $2, location = $3, category = $4, procurement = $5,
@@ -176,6 +185,9 @@ app.put("/api/public/Asset/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to update asset." });
   }
 });
+
+
+
 
 // To delete an asset
 app.delete("/api/public/Asset/:id", async (req, res) => {
@@ -272,6 +284,8 @@ app.post("/api/public/add-Asset", async (req, res) => {
       return res.status(400).json({ error: "Selected supplyOrder does not exist." });
     }
 
+
+
     // If all foreign keys exist, insert the asset record
     const insertAssetQuery = `
       INSERT INTO public."Asset" (description, serial_no, location, category, procurement, installation, insurance, warranty, remarks, "supplyOrder", challan, asset_id, waranty_start_date, warranty_end_date, tagging_status, "physicalStatus")
@@ -309,6 +323,8 @@ app.post("/api/public/add-Asset", async (req, res) => {
 {
   /*                          Supply Order Screen                                     */
 }
+
+
 
 //to get supply order
 app.get("/api/public/SupplyOrder", async (req, res) => {
@@ -405,6 +421,8 @@ app.post("/api/public/add-Location", async (req, res) => {
   }
 });
 
+
+
 //to edit location
 app.put("/api/public/Location/:id", async (req, res) => {
   try {
@@ -430,7 +448,6 @@ app.put("/api/public/Location/:id", async (req, res) => {
 {
   /*                          Category Screen                            */
 }
-
 //to get category
 app.get("/api/public/Category", async (req, res) => {
   try {
@@ -464,6 +481,8 @@ app.post("/api/public/add-Category", async (req, res) => {
       .json({ error: "Failed to add category. Please try again later." });
   }
 });
+
+
 
 //to update category
 app.put("/api/public/Category/:id", async (req, res) => {
@@ -503,6 +522,8 @@ app.get("/api/public/Challan", async (req, res) => {
   }
 });
 
+
+
 //to add new challan
 app.post("/api/public/add-Challan", async (req, res) => {
   try {
@@ -525,8 +546,9 @@ app.post("/api/public/add-Challan", async (req, res) => {
   }
 });
 
-//to update challan
 
+
+//to update challan
 app.put("/api/public/Challan/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -1062,7 +1084,7 @@ app.post("/api/public/login", async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT id, password_hash, role FROM public."passwords" WHERE username = $1',
+      'SELECT id, password_hash, role FROM public.passwords WHERE username = $1',
       [username]
     );
 
@@ -1135,7 +1157,7 @@ app.get("/api/public/verifyToken", (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
+process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
