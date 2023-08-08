@@ -37,8 +37,86 @@ app.get("/api/public/Asset", async (req, res) => {
 });
 
 
-//route for home page enpoints
+//route for view assett
 
+app.get('/api/public/assets', async (req, res) => {
+  try {
+    const query = `
+    SELECT
+    a.id AS asset_id,
+    d.make AS description,
+    a.serial_no,
+    l.address AS location,
+    c.name AS category,
+    a.procurement,
+    i.installation_date AS installation_date,
+    i.commissioning_date AS commissioning_date,
+    "in".insurance_company AS insurance_company,
+    a.warranty,
+    a.remarks,
+    so.price AS supplyOrder_price,
+    ch.challan_details AS challan_details,
+    a.asset_id,
+    a.waranty_start_date,
+    a.warranty_end_date,
+    a.tagging_status,
+    a."physicalStatus"
+FROM
+    public."Asset" a
+LEFT JOIN
+    public."Description" d ON a.description = d.id
+LEFT JOIN
+    public."Location" l ON a.location = l.id
+LEFT JOIN
+    public."Category" c ON a.category = c.id
+LEFT JOIN
+    public."Installation" i ON a.installation = i.id
+LEFT JOIN
+    public."Insurance" "in" ON a.insurance = "in".id
+LEFT JOIN
+    public."SupplyOrder" so ON a."supplyOrder" = so.id
+LEFT JOIN
+    public."Challan" ch ON a.challan = ch.id
+LEFT JOIN
+    public."Procurement" p ON a.procurement = p.procurement_id;
+
+    `;
+    
+    const { rows } = await pool.query(query);
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching assets:', error);
+    res.status(500).json({ error: 'Failed to fetch assets' });
+  }
+});
+
+
+// to view procurement table
+
+app.get('/api/public/procurements', async (req, res) => {
+  try {
+    const query = `
+      SELECT
+        p.procurement_id,
+        p.supply_order_id,
+        p.purchase_date,
+        p.purchase_price,
+        v.name AS vendor_name,
+        i.invoice_details AS invoice_details,
+        c.challan_details AS challan_details
+      FROM public."Procurement" p
+      LEFT JOIN public."Vendor" v ON p.vendor_id = v.id
+      LEFT JOIN public."Invoice" i ON p.invoice_id = i.id
+      LEFT JOIN public."Challan" c ON p.challan_id = c.id;
+    `;
+
+    const { rows } = await pool.query(query);
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching procurements:', error);
+    res.status(500).json({ error: 'Failed to fetch procurements' });
+  }
+});
 
 
 
