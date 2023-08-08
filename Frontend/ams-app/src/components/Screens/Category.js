@@ -84,7 +84,7 @@ const CategoryScreen = () => {
       <Button variant="primary" onClick={handleAddCategoryClick} className="mt-4 w-100" style={{ marginBottom: "10px" }}>
         Add New Category
       </Button>
-<div className="table-responsive" style={{  width: "900px", margin: "auto" }} >
+<div className="table-responsive" style={{  width: "1000px", margin: "auto" }} >
        <Table striped bordered hover className="mb-0">
         <thead>
           <tr>

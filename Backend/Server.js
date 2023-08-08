@@ -927,6 +927,18 @@ app.get("/api/public/users", async (req, res) => {
   }
 });
 
+//to delete user
+app.delete("/api/public/users/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await pool.query("DELETE FROM passwords WHERE id = $1", [id]);
+    res.json({ message: "User deleted successfully!" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "Error deleting user" });
+  }
+});
+
 
 //register endpoints
 app.post("/api/public/register", async (req, res) => {

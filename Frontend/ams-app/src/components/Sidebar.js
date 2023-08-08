@@ -8,13 +8,6 @@ import {
 import './Sidebar.css';
 
 const Sidebar = () => {
-  const handleLogout = () => {
-
-  //clearuser session etc needs to be added
-    window.location.href = "/login"
-    alert("Logout clicked!");
-  };
-  
   const [showSidebar, setShowSidebar] = useState(false);
 
   const toggleSidebar = () => {
@@ -28,7 +21,7 @@ const Sidebar = () => {
         <span className="sidebar-title">Dashboard</span>
       </div>
       <div className="sidebar-links">
-        <Link to="/asset-entry" className="sidebar-link" onClick={toggleSidebar}>         
+        <Link to="/asset-entry" className="sidebar-link" onClick={toggleSidebar}>
           Asset
         </Link>
 
@@ -40,24 +33,24 @@ const Sidebar = () => {
           Location
         </Link>
 
-        <Link to="/supply-order" className="sidebar-link" onClick={toggleSidebar}>         
+        <Link to="/supply-order" className="sidebar-link" onClick={toggleSidebar}>
           SupplyOrder
         </Link>
 
-        <Link to="/category" className="sidebar-link" onClick={toggleSidebar}>         
+        <Link to="/category" className="sidebar-link" onClick={toggleSidebar}>
           Category
         </Link>
 
-        <Link to="/challan" className="sidebar-link" onClick={toggleSidebar}>         
+        <Link to="/challan" className="sidebar-link" onClick={toggleSidebar}>
           Challan
         </Link>
 
-        <Link to="/description" className="sidebar-link" onClick={toggleSidebar}>         
+        <Link to="/description" className="sidebar-link" onClick={toggleSidebar}>
           Description
         </Link>
 
-        <Link to="/installation" className="sidebar-link" onClick={toggleSidebar}>  
-          Installation  
+        <Link to="/installation" className="sidebar-link" onClick={toggleSidebar}>
+          Installation
         </Link>
 
         <Link to="/insurance" className="sidebar-link" onClick={toggleSidebar}>
@@ -67,21 +60,17 @@ const Sidebar = () => {
         <Link to="/invoice" className="sidebar-link" onClick={toggleSidebar}>
           Invoice
         </Link>
-     
+
         <Link to="/procurement" className="sidebar-link" onClick={toggleSidebar}>
           Procurement
         </Link>
 
         <Link to="/vendor" className="sidebar-link" onClick={toggleSidebar}>
-         Vendor
+          Vendor
         </Link>
-       
-
       </div>
       <div className="sidebar-footer">
-        <button className="logout-btn" onClick={handleLogout}>
-          Logout
-        </button>
+        {/* Skip the logout button */}
       </div>
       <div className="sidebar-toggle" onClick={toggleSidebar}>
         <FontAwesomeIcon icon={faBars} className="toggle-icon" />
