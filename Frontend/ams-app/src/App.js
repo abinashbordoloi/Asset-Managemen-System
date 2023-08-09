@@ -67,6 +67,7 @@ function App() {
         if (response.ok) {
           setIsLoggedIn(true);
           const user = await response.json();
+          console.log("user is ", user);
           setUsername(user.username); // Set the username state
         } else {
           localStorage.removeItem("jwt");
@@ -96,7 +97,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        {isLoggedIn && <Sidebar />}
+        {isLoggedIn && <Sidebar userName={username}/>}
         {isLoggedIn && <NavbarComponent username={username} handleLogout={handleLogout} />}
         <Routes>
           {/* Route for the root path */}

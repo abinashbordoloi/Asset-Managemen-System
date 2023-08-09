@@ -12,7 +12,7 @@ const HOST = process.env.HOST;
 const PORT = process.env.PORT;
 const DATABASE = process.env.DATABASE;
 
-console.log(PASSWORD,HOST,PORT,DATABASE );
+
 
 
 const pool = new Pool({
@@ -62,8 +62,8 @@ app.get('/api/public/assets', async (req, res) => {
     i.commissioning_date AS commissioning_date,
     "in".insurance_company AS insurance_company,
     a.remarks,
-    so.price AS suppyOrder_price,
-    ch.challan_details AS challan_details,
+    so.price AS supplyOrder_price,
+    
     a.asset_id,
     a.waranty_start_date,
     a.warranty_end_date,
@@ -83,12 +83,11 @@ LEFT JOIN
     public."Insurance" "in" ON a.insurance = "in".id
 LEFT JOIN
     public."SupplyOrder" so ON a."supplyOrder" = so.id
+
 LEFT JOIN
-    public."Challan" ch ON a.challan = ch.id
+    public."Procurement" p ON a.procurement = p.procurement_id
 LEFT JOIN
-    public."Procurement" p ON a.procurement = p.procurement_id;
-LEFT JOIN 
-    public."Procurement" p on p.supply_order_id = so.id;
+    public."SupplyOrder" s on s.id = p.supply_order_id
 
     `;
     
@@ -528,15 +527,17 @@ app.get("/api/public/Challan", async (req, res) => {
 app.post("/api/public/add-Challan", async (req, res) => {
   try {
     const { challan_details } = req.body;
+    console.log(challan_details);
 
     const insertChallanQuery = `
       INSERT INTO public."Challan" (challan_details)
       VALUES ($1)
       RETURNING *
     `;
-
+  
     const values = [challan_details];
     const newChallan = await pool.query(insertChallanQuery, values);
+    console.log(newChallan);
     res.status(201).json(newChallan.rows[0]);
   } catch (error) {
     console.error("Error adding challan:", error);
@@ -1094,6 +1095,7 @@ app.post("/api/public/login", async (req, res) => {
       const sotoredHashedPassword = result.rows[0].password_hash;
       const user = {
         id: result.rows[0].id,
+        username: result.rows[0].username,
         roles: result.rows[0].roles,
       };
 
@@ -1105,14 +1107,13 @@ app.post("/api/public/login", async (req, res) => {
       if (isPasswordValid) {
         //If authentication is successful, generate a JWT token for the user with a secret key
         const token = jwt.sign(
-          { userId: user.id, roles: user.roles },
+          { userId: user.id,username:user.username, roles: user.roles },
           jwtSecret,
           {
-            expiresIn: "2h", //Token expiration time
+            expiresIn: "2h", //Token expiration timee
           }
         )
-        console.log("Token generated:", token)
-        
+ 
         ;
 
         //return the token to the client
@@ -1138,9 +1139,7 @@ app.get("/api/public/verifyToken", (req, res) => {
   console.log("Token verification request received:", req.body);
 
   const token = req.header("Authorization")?.split(" ")[1];
-  console.log(token);
-
-  console.log("Token received:", token);
+  
 
   if (!token) {
     return res.status(401).json({ error: "Access denied. Token missing." });
@@ -1148,9 +1147,12 @@ app.get("/api/public/verifyToken", (req, res) => {
 
   try {
     const decodedToken = jwt.verify(token, jwtSecret);
-  
+   
+    
+    //pass the username as the response
+    res.status(200).json({ username: decodedToken.username, roles: decodedToken.roles });
 
-    res.status(200).json({ message: "Token verified succeessfully" });
+   
   } catch (error) {
     console.error("Error verifying token:", error);
     res.status(401).json({ error: "Token verification failed, Invalid token" });

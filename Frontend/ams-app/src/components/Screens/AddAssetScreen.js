@@ -16,7 +16,7 @@ const AddAssetScreen = () => {
     tagging_status: "",
     remarks: "",
     supplyOrder: "",
-    challan: "",
+    //challan: "",
     physicalStatus: "",
     asset_id: "",
     warranty_start_date: "",
@@ -40,7 +40,7 @@ const AddAssetScreen = () => {
         tagging_status: "",
         remarks: "",
         supplyOrder: "",
-        challan: "",
+        // challan: "",
         physicalStatus: "",
         asset_id: "",
         warranty_start_date: "",
@@ -49,7 +49,7 @@ const AddAssetScreen = () => {
     } catch (error) {
       console.error("Error adding asset:", error);
       alert(
-        "Failed to add asset.Location/category/procurement/installation/insurance/tagging Status/supply order/challan/physical status does not exist. Please try again later."
+        "Failed to add asset.Location/category/procurement/installation/insurance/tagging Status/supply order/physical status does not exist. Please try again later."
       );
     }
   };
@@ -206,7 +206,7 @@ const AddAssetScreen = () => {
                         required
                       />
                     </Form.Group>
-                    <Form.Group style={{ marginBottom: "10px" }}>
+                    {/* <Form.Group style={{ marginBottom: "10px" }}>
                       <Form.Control
                         type="text"
                         placeholder="Challan"
@@ -215,7 +215,7 @@ const AddAssetScreen = () => {
                         onChange={handleInputChange}
                         required
                       />
-                    </Form.Group>
+                    </Form.Group> */}
                     <Form.Group style={{ marginBottom: "10px" }}>
                       <Form.Control
                         as="select" // Use select to render a dropdown
@@ -252,6 +252,7 @@ const AddAssetScreen = () => {
                     <Form.Group style={{ marginBottom: "10px" }}>
                       <Form.Control
                         type="date"
+                        
                         placeholder="Warranty End Date"
                         name="warranty_end_date"
                         value={assetData.warranty_end_date}

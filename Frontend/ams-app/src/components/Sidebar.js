@@ -7,7 +7,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './Sidebar.css';
 
-const Sidebar = () => {
+const Sidebar = ({username}) => {
   const [showSidebar, setShowSidebar] = useState(false);
 
   const toggleSidebar = () => {
@@ -68,6 +68,7 @@ const Sidebar = () => {
         <Link to="/vendor" className="sidebar-link" onClick={toggleSidebar}>
           Vendor
         </Link>
+        <span className="user-name">{username}</span>
       </div>
       <div className="sidebar-footer">
         {/* Skip the logout button */}

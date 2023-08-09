@@ -66,7 +66,7 @@ const AssetView = () => {
                           <th>Tagging Status</th>
                           <th>Remarks</th>
                           <th>Supply Order Price</th>
-                          <th>Challan</th>
+                          {/* <th>Challan</th> */}
                           <th>Physical Status</th>
                           <th>Asset ID</th>
                           <th>Warranty Start Date</th>
@@ -89,7 +89,7 @@ const AssetView = () => {
                             <td>{asset.tagging_status}</td> 
                             <td>{asset.remarks}</td>
                             <td>{asset.supplyorder_price}</td>
-                            <td>{asset.challan_details}</td>
+                            {/* <td>{asset.challan_details}</td> */}
                             <td>{asset.physicalStatus}</td>
                             <td>{asset.asset_id}</td>
                             <td>{asset.waranty_start_date}</td>
