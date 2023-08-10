@@ -1,0 +1,102 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -240px;
+    width: 240px;
+    height: 100%;
+    background-color: #f5f5dc; 
+    transition: left 0.3s ease-in-out;
+    z-index: 9999;
+  }
+  
+  .sidebar.active {
+    left: 0;
+  }
+  
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    color: #2d384b; 
+    font-size: 20px;
+    background-color: #fff; 
+  }
+  
+  .sidebar-title {
+    margin-left: 10px;
+  }
+  
+  .sidebar-links {
+    margin-top: 20px;
+  }
+  
+  .sidebar-link {
+    display: block;
+    padding: 10px;
+    color: #2d384b; 
+    text-decoration: none;
+  }
+  
+  .sidebar-icon {
+    margin-right: 10px;
+  }
+  
+  .sidebar-link:hover {
+    background-color: #e6e6cf; 
+  }
+  
+  .sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff; 
+  }
+  
+  .logout-btn {
+    padding: 8px 16px;
+    border: none;
+    background-color: #f44336; 
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .logout-btn:hover {
+    background-color: #d32f2f; 
+  }
+  
+  .sidebar-toggle {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+    color: #82b6d2;
+  }
+  
+  .toggle-icon {
+    font-size: 24px;
+  }
+  
+  .sidebar-links {
+    margin-top: 20px;
+    height: calc(100% - 120px); /* Adjust the height based on your requirements */
+    overflow-y: auto; /* Add a scrollbar when the links exceed the height */
+  }
+  
+  .sidebar-link {
+    display: block;
+    padding: 10px;
+    color: #000000;
+    text-decoration: none;
+  }
+  
+  .sidebar-icon {
+    margin-right: 10px;
+  }
+  
+  .sidebar-link:hover {
+    background-color: #686c72;
+  }
+  
